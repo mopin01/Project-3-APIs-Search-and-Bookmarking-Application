@@ -7,10 +7,14 @@ html, body {
 	color: #000;
 }
 	/* sets the body height of the browser, so that backgrounds and div heights work correctly. Color and background will almost certainly be altered; they are just placeholders */
-	
+
 body {
 	font-size: 1.4rem;
 	text-rendering: optimizeLegibility;
+	margin: 40px;
+	background-color: rgb(182, 248, 226);
+	text-align: center;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 	/* sets the base font size for the document; turns on kerning pairs and ligatures */
 	
