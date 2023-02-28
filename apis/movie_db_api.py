@@ -1,5 +1,8 @@
 import requests
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 search_url = 'https://api.themoviedb.org/3/search/movie'
 MOVIE_API_KEY = os.getenv('MOVIE_API_KEY')
