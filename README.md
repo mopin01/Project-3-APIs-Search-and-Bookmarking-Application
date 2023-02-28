@@ -2,23 +2,6 @@
 
 The user will enter a search query (actor, movie title etc). The app will contact the moviedb API to request search query data (like overview, release date etc) ; youtube API to request trailers data; and wikipedia API to request more background data (like casts etc). The app will present this data to the user in this way: web application
 
-## Built With
-
-```
-,___________,         .----------,   Request     .------------,       .----------.
-|___________|       ,'_________,'|   -> | ->   ,'___________,'|      ( ~--------~ )
-| HTML5     |      | Flask     | |      |      | Python     | |      | SQLite     |
-| CSS3      |      |           | |      |      | Requests   | |      |            |
-|           |      |           | |      |      | dotenv     | |      |            |
-|           | <--- |           | |      |      |            | | <--- |            |
-|           |      |           | |      |      |            | |      |            |
-|           |      |           | |      |      |            | |      |            |
-|           |      |           | ;   <- | <-   |            | ;      | ~--------~ |
-|___________|      |___________|'   Response   |____________|'       `.__________.'
-   Client           Client Logic             Server & Middleware        Database
-           *Front End*                                       *Back End*
-```
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. You can either fork this repoistory and then clone it from your computer or you can download the zip file.
