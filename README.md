@@ -22,7 +22,7 @@ Once you clone the repo, you will want to install all the modules so that the re
 2. Create a [Youtube API key](https://developers.google.com/youtube/v3)
 3. Create an `.env` with your API keys.
 
-- To utilize API keys, you will need to create a .env file in your main directory. You will not be able to upload it to this repo as most .gitignore will ignore the file. This is for security reasons as you do not want to post your API Keys to these services out in the open. When you are done creating the .env file, insert your respective keys into the text below and then save the .env file.
+To utilize API keys, you will need to create a .env file in your main directory. You will not be able to upload it to this repo as most .gitignore will ignore the file. This is for security reasons as you do not want to post your API Keys to these services out in the open. When you are done creating the .env file, insert your respective keys into the text below and then save the .env file.
 
 ```
 export MOVIE_API_KEY='INSERT MOVIE_API_KEY KEY HERE'
