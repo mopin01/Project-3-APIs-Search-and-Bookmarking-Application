@@ -9,7 +9,7 @@ MOVIE_API_KEY = os.getenv('MOVIE_API_KEY')
 
 
 def get_overview(name):
-    # search_url = f'https://api.themoviedb.org/3/search/movie'
+    """ This function gets details about the movie by title - like release-date, overview and other useful information """
     try:
         params = {
             'query' : name,
@@ -23,6 +23,25 @@ def get_overview(name):
         return overview, release_date,id,original_title
     except Exception as e:
         print('Unable to fetch data', e)
+
+def get_image(id):
+    """ This function generates the image of the movie using the movie id """
+    image_url = f'https://api.themoviedb.org/3/movie/{id}/images'
+    try:
+        params = {
+            'api_key' : MOVIE_API_KEY
+        }
+        image_response = requests.get(image_url, params=params).json()
+        image_path = image_response['backdrops'][0]['file_path']
+        image_path = 'https://image.tmdb.org/t/p/w500/' + image_path
+        return image_path
+    except Exception as e:
+        print('Unable to fetch image', e)    
+    
+        
+        
+    
+    
         
 
 
