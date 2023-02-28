@@ -1,27 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">    
+{% extends "base.html" %}
 
-    <title>Movie API Search App</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% block content %}
     <div class="content m-4 center-block">
         <h1>Movie API Search Tool</h1>
     
         <p>Uses The IMBD API, Wikipidia API, and the YouTube API to look up your favorite movies.</p>
-    
+        
+        <form method="GET" action="/get_movie"
         <label for="search-query">Search query: </label> 
         <br>
-        <input id="search-query" name="search-query">
+        <input id="movie_name" name="movie_name">
         <br>
-        <button class="btn btn-success" id="submit-button">Search!</button> 
+        <input class="btn btn-success" id="submit-button" type="submit" value="GO" />
+        <form>
             
     </div>
-    <script src="../javascript/index.js"></script>
-    </body>
-</html>
+
+{% endblock %}
+  
