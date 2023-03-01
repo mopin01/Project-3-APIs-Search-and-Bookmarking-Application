@@ -52,7 +52,14 @@ def more_info(id):
         genre_list = []
         for genre in genre_info:
             genre_list.append(genre['name'])
-        return genre_list
+        budget = response_data['budget']
+        revenue = response_data['revenue']
+        status = response_data['status']
+        production_companies = response_data['production_companies']
+        production_companies_list = []
+        for company in production_companies:
+            production_companies_list.append(company['name'])            
+        return genre_list, budget, revenue, status, production_companies_list
     except Exception as e:
         print('Unable to fetch genre data', e)
         
