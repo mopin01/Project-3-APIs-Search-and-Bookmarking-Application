@@ -2,16 +2,19 @@
 
 {% block content %}
 <p>
-    MOVIE_ID: {{ id }}<br>
-    ORIGINAL_TITLE: {{ original_title }}<br>
-    TITLE: {{ title }} <br>
-    RELEASE-DATE: {{ release_date }}<br>
-    BUDGET: {{ budget }}<br>
-    REVENUE: {{ revenue }}<br>
+    
+    MOVIE_ID: {{ overview_data.id }}<br>
+    ORIGINAL_TITLE: {{ overview_data.original_title }}<br>
+    TITLE: {{ overview_data.title }} <br>
+    RELEASE-DATE: {{ overview_data.release_date }}<br>
+    BUDGET: {{ business_data.budget }}<br>
+    REVENUE: {{ business_data.revenue }}<br>
+    
 </p>
 
 <p> 
-    OVERVIEW: {{ overview }}
+    OVERVIEW: {{ overview_data.overview }}
+
 </p>
 
 <p>
