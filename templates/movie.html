@@ -2,17 +2,43 @@
 
 {% block content %}
 <p>
-    MOVIE_ID: {{ id }}
+    
+    MOVIE_ID: {{ overview_data.id }}<br>
+    ORIGINAL_TITLE: {{ overview_data.original_title }}<br>
+    TITLE: {{ overview_data.title }} <br>
+    RELEASE-DATE: {{ overview_data.release_date }}<br>
+    BUDGET: {{ business_data.budget }}<br>
+    REVENUE: {{ business_data.revenue }}<br>
+    
+</p>
+
+<p> 
+    OVERVIEW: {{ overview_data.overview }}
+
 </p>
 
 <p>
-    MOVIE_TITLE: {{ original_title }}
+    {% for image in image_list %}
+    <div>
+        <img src= "{{ image }}"> <br>
+    </div>
+    {% endfor%}
 </p>
-<p> 
-    OVERVIEW: {{ overview }}
+
+<p> GENRE:
+    {% for genre in genre_list %}
+
+    {{ genre }}
+    {% endfor %}
 </p>
-<p>
-    RELEASE-DATE: {{ release_date }}
+
+<p>PRODUCTION COMPANIES:
+    <br> 
+    {%for company in production_companies_list %}
+    {{ company }}<br>
+    {% endfor %}
 </p>
+
+    
 
 {% endblock %}
