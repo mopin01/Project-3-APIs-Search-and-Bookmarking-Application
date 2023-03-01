@@ -32,9 +32,12 @@ def get_image(id):
             'api_key' : MOVIE_API_KEY
         }
         image_response = requests.get(image_url, params=params).json()
-        image_path = image_response['backdrops'][0]['file_path']
-        image_path = 'https://image.tmdb.org/t/p/w500/' + image_path
-        return image_path
+        image_url_list = []
+        for i in range(5):
+            image_path = image_response['backdrops'][i]['file_path']
+            image_path = 'https://image.tmdb.org/t/p/w500/' + image_path
+            image_url_list.append(image_path)
+        return image_url_list
     except Exception as e:
         print('Unable to fetch image', e)    
     

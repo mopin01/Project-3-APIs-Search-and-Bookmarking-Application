@@ -11,8 +11,10 @@ def homepage():
 def movie_info():
     movie_title = request.args.get('movie_name')
     overview, release_date, id, original_title = movie_db_api.get_overview(movie_title)
-    image = movie_db_api.get_image(id)
-    return render_template('movie.html', overview=overview, release_date=release_date, id=id, original_title=original_title, image=image)
+    image_list = movie_db_api.get_image(id)
+    for image in image_list:
+        print(image)
+    return render_template('movie.html', overview=overview, release_date=release_date, id=id, original_title=original_title, image_list=image_list)
     
 
 
