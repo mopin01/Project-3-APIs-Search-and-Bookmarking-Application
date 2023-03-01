@@ -16,12 +16,14 @@ def get_overview(name):
             'api_key' : MOVIE_API_KEY
         }
         response = requests.get(search_url, params=params).json()
-        overview = response['results'][0]['overview']
-        id = response['results'][0]['id'] # can be used to query more info
-        original_title = response['results'][0]['original_title']
-        release_date = response['results'][0]['release_date']
-        title = response['results'][0]['title']
-        return overview, release_date,id,original_title,title
+        overview_data = {
+            'overview' : response.get('results')[0].get('overview'),
+            'id': response.get('results')[0].get('id'),
+            'release_date' : response.get('results')[0].get('release_date'),
+            'original_title' : response.get('results')[0].get('original_title'),
+            'title' : response.get('results')[0].get('title')
+        }
+        return overview_data
     except Exception as e:
         print('Unable to fetch data', e)
 
@@ -43,6 +45,8 @@ def get_image(id):
         print('Unable to fetch image', e)
     
 def more_info(id):
+    """ This function gets more data about the movie using the movie id - data like genre, production companies associated with the movie, business
+    information like revenue and budget."""
     base_url = f'https://api.themoviedb.org/3/movie/{id}'
     try:
         params = {
@@ -53,14 +57,16 @@ def more_info(id):
         genre_list = []
         for genre in genre_info:
             genre_list.append(genre['name'])
-        budget = response_data['budget']
-        revenue = response_data['revenue']
-        status = response_data['status']
+        business_data = {
+            'budget' : response_data.get('budget'),
+            'revenue' : response_data.get('revenue'),
+            'status' : response_data.get('status')
+        }
         production_companies = response_data['production_companies']
         production_companies_list = []
         for company in production_companies:
             production_companies_list.append(company['name'])            
-        return genre_list, budget, revenue, status, production_companies_list
+        return genre_list, business_data, production_companies_list
     except Exception as e:
         print('Unable to fetch genre data', e)
         
