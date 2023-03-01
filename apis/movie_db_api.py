@@ -7,7 +7,6 @@ load_dotenv()
 search_url = 'https://api.themoviedb.org/3/search/movie'
 MOVIE_API_KEY = os.getenv('MOVIE_API_KEY')
 
-
 def get_overview(name):
     """ This function gets details about the movie by title - like release-date, overview and other useful information """
     try:
@@ -26,7 +25,7 @@ def get_overview(name):
         print('Unable to fetch data', e)
 
 def get_image(id):
-    """ This function generates the image of the movie using the movie id """
+    """ This function generates the images of the movie using the movie id """
     image_url = f'https://api.themoviedb.org/3/movie/{id}/images'
     try:
         params = {
@@ -40,7 +39,24 @@ def get_image(id):
             image_url_list.append(image_path)
         return image_url_list
     except Exception as e:
-        print('Unable to fetch image', e)    
+        print('Unable to fetch image', e)
+    
+def more_info(id):
+    base_url = f'https://api.themoviedb.org/3/movie/{id}'
+    try:
+        params = {
+           'api_key' : MOVIE_API_KEY 
+        }
+        response_data = requests.get(base_url, params=params).json()
+        genre_info = response_data['genres']
+        genre_list = []
+        for genre in genre_info:
+            genre_list.append(genre['name'])
+        return genre_list
+    except Exception as e:
+        print('Unable to fetch genre data', e)
+        
+        
     
         
         
