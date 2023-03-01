@@ -20,7 +20,8 @@ def get_overview(name):
         id = response['results'][0]['id'] # can be used to query more info
         original_title = response['results'][0]['original_title']
         release_date = response['results'][0]['release_date']
-        return overview, release_date,id,original_title
+        title = response['results'][0]['title']
+        return overview, release_date,id,original_title,title
     except Exception as e:
         print('Unable to fetch data', e)
 

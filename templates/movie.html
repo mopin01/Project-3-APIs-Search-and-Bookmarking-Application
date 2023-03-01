@@ -6,8 +6,13 @@
 </p>
 
 <p>
-    MOVIE_TITLE: {{ original_title }}
+    ORIGINAL_TITLE: {{ original_title }}
 </p>
+
+<p>
+    TITLE: {{ title }}
+</p>
+
 <p> 
     OVERVIEW: {{ overview }}
 </p>
@@ -18,7 +23,7 @@
 <p>
     {% for image in image_list %}
     <div>
-        <img src= "{{ image }}">
+        <img src= "{{ image }}"> <br>
     </div>
     {% endfor%}
 </p>
