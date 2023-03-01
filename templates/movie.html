@@ -2,22 +2,16 @@
 
 {% block content %}
 <p>
-    MOVIE_ID: {{ id }}
-</p>
-
-<p>
-    ORIGINAL_TITLE: {{ original_title }}
-</p>
-
-<p>
-    TITLE: {{ title }}
+    MOVIE_ID: {{ id }}<br>
+    ORIGINAL_TITLE: {{ original_title }}<br>
+    TITLE: {{ title }} <br>
+    RELEASE-DATE: {{ release_date }}<br>
+    BUDGET: {{ budget }}<br>
+    REVENUE: {{ revenue }}<br>
 </p>
 
 <p> 
     OVERVIEW: {{ overview }}
-</p>
-<p>
-    RELEASE-DATE: {{ release_date }}
 </p>
 
 <p>
@@ -33,6 +27,15 @@
 
     {{ genre }}
     {% endfor %}
+</p>
+
+<p>PRODUCTION COMPANIES:
+    <br> 
+    {%for company in production_companies_list %}
+    {{ company }}<br>
+    {% endfor %}
+</p>
+
     
 
 {% endblock %}
