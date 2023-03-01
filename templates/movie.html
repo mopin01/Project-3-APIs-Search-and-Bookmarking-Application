@@ -16,7 +16,11 @@
 </p>
 
 <p>
-    <img src= {{ image }}>
+    {% for image in image_list %}
+    <div>
+        <img src= "{{ image }}">
+    </div>
+    {% endfor%}
 </p>
 
 {% endblock %}
