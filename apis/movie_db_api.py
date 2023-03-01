@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 search_url = 'https://api.themoviedb.org/3/search/movie'
+base_image_url = 'https://image.tmdb.org/t/p/w500/'
 MOVIE_API_KEY = os.getenv('MOVIE_API_KEY')
 
 def get_overview(name):
@@ -35,7 +36,7 @@ def get_image(id):
         image_url_list = []
         for i in range(5):
             image_path = image_response['backdrops'][i]['file_path']
-            image_path = 'https://image.tmdb.org/t/p/w500/' + image_path
+            image_path = base_image_url + image_path
             image_url_list.append(image_path)
         return image_url_list
     except Exception as e:
