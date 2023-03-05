@@ -20,7 +20,7 @@ class Cache:
                 check_same_thread=False  # Allow connections from multiple threads
             )
         except sqlite3.Error as e:
-            print(f"Error connecting to cache database: {e}")
+            # print(f"Error connecting to cache database: {e}")
             raise e
         self.cur = self.conn.cursor()
 
@@ -37,7 +37,7 @@ class Cache:
                 f"CREATE TABLE movies ({columns_sql}, PRIMARY KEY (title))"
             )
         except sqlite3.Error as e:
-            print(f"Error creating movies table: {e}")
+            # print(f"Error creating movies table: {e}")
             raise e
 
     def add_movie(self, data):
@@ -46,6 +46,15 @@ class Cache:
         columns_sql = ','.join(self.columns)
         placeholders_sql = ','.join(['?' for _ in range(len(self.columns))])
         values = [data.get(col, None) for col in self.columns]
+
+        # Check if the movie already exists
+        with conn:
+            self.cur.execute("SELECT * FROM movies WHERE title=?", (data['title'],))
+            row = self.cur.fetchone()
+            if row is not None:
+                raise ValueError(f"Movie '{data['title']}' already exists in the database.")
+
+        # Insert the movie into the database
         try:
             with conn:
                 conn.execute(
@@ -53,8 +62,19 @@ class Cache:
                     values
                 )
         except sqlite3.Error as e:
-            print(f"Error adding movie to database: {e}")
+            # print(f"Error adding movie to database: {e}")
             raise e
+    
+    def clear_cache(self):
+        # Clear all data from the 'movies' table
+        conn = self._get_conn()
+        with conn:
+            try:
+                conn.execute("DELETE FROM movies")
+                # print("Database cleared.")
+            except sqlite3.Error as e:
+                # print(f"Error clearing database: {e}")
+                raise e
 
     def get_movie(self, title):
         # Retrieve a movie from the 'movies' table using its title
@@ -68,7 +88,7 @@ class Cache:
                 # Return a dictionary with column names as keys and row values as values
                 return dict(zip(self.columns, row))
             except sqlite3.Error as e:
-                print(f"Error retrieving movie from database: {e}")
+                # print(f"Error retrieving movie from database: {e}")
                 raise e
 
     def _get_conn(self):
@@ -83,6 +103,6 @@ class Cache:
                     check_same_thread=False  # Allow connections from multiple threads
                 )
             except sqlite3.Error as e:
-                print(f"Error connecting to cache database: {e}")
+                # print(f"Error connecting to cache database: {e}")
                 raise e
         return self.conn_per_thread.conn
