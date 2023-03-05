@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 id="movie-quoter">Movie Quoter</h1>
+<div id="quote">
+    "{{ movie_quote.quote }}"
+</div>    
+<div>
+    - {{ movie_quote.author }}
+</div>
+
+
+{% endblock %}
+
+
