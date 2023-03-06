@@ -21,7 +21,7 @@ class Bookmarks:
                 check_same_thread=False  # Allow connections from multiple threads
             )
         except sqlite3.Error as e:
-            print(f"Error connecting to cache database: {e}")
+            # print(f"Error connecting to cache database: {e}")
             raise e
 
         # Create a cursor object to execute SQL commands
@@ -38,7 +38,7 @@ class Bookmarks:
                 f"CREATE TABLE IF NOT EXISTS movies ({columns_sql}, PRIMARY KEY (title))"
             )
         except sqlite3.Error as e:
-            print(f"Error creating movies table: {e}")
+            # print(f"Error creating movies table: {e}")
             raise e
 
     def add_movie(self, data):
@@ -60,18 +60,18 @@ class Bookmarks:
         except sqlite3.IntegrityError as e:
             # If the movie already exists in the table, update its data instead
             if "UNIQUE constraint failed" in str(e):
-                print("Movie already exists in the database.")
+                # print("Movie already exists in the database.")
                 with conn:
                     update_sql = f"UPDATE movies SET overview=?, release_date=?, id=?, original_title=? WHERE title=?"
                     update_values = [data.get('overview', None), data.get('release_date', None), data.get('id', None), data.get('original_title', None), data['title']]
                     conn.execute(update_sql, update_values)
             else:
                 # If there's another error, raise an exception
-                print(f"Error adding movie to database: {e}")
+                # print(f"Error adding movie to database: {e}")
                 raise e
         except sqlite3.Error as e:
             # If there's another error, raise an exception
-            print(f"Error adding movie to database: {e}")
+            # print(f"Error adding movie to database: {e}")
             raise e
 
 
@@ -89,7 +89,7 @@ class Bookmarks:
                 return dict(zip(self.columns, row))
             except sqlite3.Error as e:
                 # If there's an error, raise an exception
-                print(f"Error retrieving movie from database: {e}")
+                # print(f"Error retrieving movie from database: {e}")
                 raise e
     
     def delete_movie(self, title):
@@ -97,31 +97,19 @@ class Bookmarks:
         conn = self._get_conn()
         # Use a "with" block to ensure the connection is properly closed when done
         with conn:
-            # Execute a SELECT statement to check if the movie is in the database
-            self.cur.execute("SELECT * FROM movies WHERE title=?", (title,))
-            result = self.cur.fetchone()
-            # If the movie isn't found, print a message and return
-            if result is None:
-                print(f"Movie with title '{title}' not found in database.")
-                return
-            
-            # Ask the user for confirmation before deleting the movie
-            confirmation = input(f"Are you sure you want to delete '{title}' from the database? (y/n) ")
-            if confirmation.lower() != 'y':
-                print(f"Deletion of '{title}' cancelled.")
-                return
-
-            # Attempt to delete the movie from the database
-            try:
+            # Check if the movie exists in the database
+            cursor = conn.execute("SELECT COUNT(*) FROM movies WHERE title=?", (title,))
+            count = cursor.fetchone()[0]
+            if count == 0:
+                # If the movie doesn't exist, raise a ValueError
+                raise ValueError(f"Movie '{title}' not found in database.")
+            else:
+                # If the movie exists, delete it from the database
                 conn.execute("DELETE FROM movies WHERE title=?", (title,))
-                print(f"Movie '{title}' deleted from database.")
-            except sqlite3.Error as e:
-                # If an error occurs during deletion, print an error message and raise the error
-                print(f"Error deleting movie from database: {e}")
-                raise e
+                # print(f"Movie '{title}' deleted from database.")
 
 
-    def view_bookmarks(self):
+    def get_all_movies(self):
         # Get a connection to the database
         conn = self._get_conn()
         # Use a "with" block to ensure the connection is properly closed when done
@@ -138,9 +126,22 @@ class Bookmarks:
                 return results
             except sqlite3.Error as e:
                 # If an error occurs during retrieval, print an error message and raise the error
-                print(f"Error retrieving bookmarks from database: {e}")
+                # print(f"Error retrieving bookmarks from database: {e}")
                 raise e
-
+    
+    def clear_database(self):
+        # Get a connection to the database
+        conn = self._get_conn()
+        # Use a "with" block to ensure the connection is properly closed when done
+        with conn:
+            try:
+                # Execute a DELETE statement to remove all rows from the movies table
+                conn.execute("DELETE FROM movies")
+                # print("All data cleared from movies table.")
+            except sqlite3.Error as e:
+                # If an error occurs during deletion, print an error message and raise the error
+                # print(f"Error clearing data from movies table: {e}")
+                raise e
 
     def _get_conn(self):
         # If a connection for this thread doesn't already exist, create one
@@ -156,7 +157,7 @@ class Bookmarks:
                 )
             except sqlite3.Error as e:
                 # If an error occurs during connection creation, print an error message and raise the error
-                print(f"Error connecting to cache database: {e}")
+                # print(f"Error connecting to cache database: {e}")
                 raise e
         # Return the existing connection
         return self.conn_per_thread.conn
