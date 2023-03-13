@@ -15,12 +15,12 @@ class Cache:
             self.conn = sqlite3.connect(
                 os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),
-                    "cache.db"
+                    'cache.db'
                 ),
                 check_same_thread=False  # Allow connections from multiple threads
             )
         except sqlite3.Error as e:
-            # print(f"Error connecting to cache database: {e}")
+            # print(f'Error connecting to cache database: {e}')
             raise e
         self.cur = self.conn.cursor()
 
@@ -30,14 +30,14 @@ class Cache:
     def create_table(self):
         # Drop the 'movies' table if it already exists
         try:
-            self.cur.execute("DROP TABLE IF EXISTS movies")
+            self.cur.execute('DROP TABLE IF EXISTS movies')
             # Create a new 'movies' table with columns as defined in self.columns
-            columns_sql = ','.join(f"{col} TEXT" for col in self.columns)
+            columns_sql = ','.join(f'{col} TEXT' for col in self.columns)
             self.cur.execute(
-                f"CREATE TABLE movies ({columns_sql}, PRIMARY KEY (title))"
+                f'CREATE TABLE movies ({columns_sql}, PRIMARY KEY (title))'
             )
         except sqlite3.Error as e:
-            # print(f"Error creating movies table: {e}")
+            # print(f'Error creating movies table: {e}')
             raise e
 
     def add_movie(self, data):
@@ -49,20 +49,20 @@ class Cache:
 
         # Check if the movie already exists
         with conn:
-            self.cur.execute("SELECT * FROM movies WHERE title=?", (data['title'],))
+            self.cur.execute('SELECT * FROM movies WHERE title=?', (data['title'],))
             row = self.cur.fetchone()
             if row is not None:
-                raise ValueError(f"Movie '{data['title']}' already exists in the database.")
+                raise ValueError(f'Movie {data["title"]} already exists in the database.')
 
         # Insert the movie into the database
         try:
             with conn:
                 conn.execute(
-                    f"INSERT INTO movies ({columns_sql}) VALUES ({placeholders_sql})",
+                    f'INSERT INTO movies ({columns_sql}) VALUES ({placeholders_sql})',
                     values
                 )
         except sqlite3.Error as e:
-            # print(f"Error adding movie to database: {e}")
+            # print(f'Error adding movie to database: {e}')
             raise e
     
     def clear_cache(self):
@@ -70,10 +70,10 @@ class Cache:
         conn = self._get_conn()
         with conn:
             try:
-                conn.execute("DELETE FROM movies")
-                # print("Database cleared.")
+                conn.execute('DELETE FROM movies')
+                # print('Database cleared.')
             except sqlite3.Error as e:
-                # print(f"Error clearing database: {e}")
+                # print(f'Error clearing database: {e}')
                 raise e
 
     def get_movie(self, title):
@@ -81,28 +81,28 @@ class Cache:
         conn = self._get_conn()
         with conn:
             try:
-                self.cur.execute("SELECT * FROM movies WHERE title=?", (title,))
+                self.cur.execute('SELECT * FROM movies WHERE title=?', (title,))
                 row = self.cur.fetchone()
                 if row is None:
                     return None
                 # Return a dictionary with column names as keys and row values as values
                 return dict(zip(self.columns, row))
             except sqlite3.Error as e:
-                # print(f"Error retrieving movie from database: {e}")
+                # print(f'Error retrieving movie from database: {e}')
                 raise e
 
     def _get_conn(self):
         # Get the database connection for the current thread
-        if not hasattr(self.conn_per_thread, "conn"):
+        if not hasattr(self.conn_per_thread, 'conn'):
             try:
                 self.conn_per_thread.conn = sqlite3.connect(
                     os.path.join(
                         os.path.dirname(os.path.abspath(__file__)),
-                        "cache.db"
+                        'cache.db'
                     ),
                     check_same_thread=False  # Allow connections from multiple threads
                 )
             except sqlite3.Error as e:
-                # print(f"Error connecting to cache database: {e}")
+                # print(f'Error connecting to cache database: {e}')
                 raise e
         return self.conn_per_thread.conn
