@@ -11,7 +11,6 @@ YOUTUBE_API_VERSION = 'v3'
 
 def get_movie_trailer(movie_title):
     try:
-        
         youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=API_KEY)
         search_response = youtube.search().list(
             q=movie_title + ' trailer',
@@ -19,7 +18,6 @@ def get_movie_trailer(movie_title):
             part='id,snippet',
             maxResults=1
         ).execute()
-
         video_id = search_response['items'][0]['id']['videoId']
         return f'https://www.youtube.com/watch?v={video_id}'
     except HttpError as e:
