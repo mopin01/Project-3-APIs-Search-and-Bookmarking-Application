@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content m-4 center-block">
+        <h1>My Bookmarks</h1>
+        <hr>
+
+        {% if movie_titles %}
+            <div class="list-group">
+                {% for title in movie_titles %}
+                    <a href="/view_bookmark?title={{ title }}">
+                        <button type="button" class="list-group-item list-group-item-action">{{ title }}</button>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>You have no bookmarks.</p>
+        {% endif %}
+    </div>
+{% endblock %}
