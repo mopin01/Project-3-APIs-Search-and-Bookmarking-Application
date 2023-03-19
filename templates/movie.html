@@ -17,6 +17,23 @@
 
 </p>
 
+
+{% if wikipedia_summary %}
+
+
+<p>
+    WIKIPEDIA SUMMARY: {{ wikipedia_summary.summary}}
+</p>
+
+{% else %} 
+
+<h2>Sorry, no wikipedia summary</h2>
+
+{% endif %}
+
+
+
+
 <p>
     {% for image in image_list %}
     <div>
