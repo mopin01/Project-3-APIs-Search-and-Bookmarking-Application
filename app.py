@@ -23,6 +23,9 @@ def movie_info():
     image_list = movie_db_api.get_image(overview_data['id'])
     genre_list, business_data, production_companies_list = movie_db_api.more_info(overview_data['id'])
 
+
+    return render_template('movie.html', overview_data=overview_data, wikiedia_summary=wikiedia_summary, image_list=image_list, genre_list=genre_list, business_data=business_data, production_companies_list=production_companies_list)
+
     # TEMPORARY- Condenses data into single list for database
     data = {}
     data.update(**overview_data)
