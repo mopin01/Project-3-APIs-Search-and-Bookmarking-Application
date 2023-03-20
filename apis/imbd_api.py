@@ -7,7 +7,8 @@ load_dotenv()
 apiKey  = os.getenv('IMBD_API_KEY')
 search_url = "https://imdb-api.com/en/API/SearchMovie"
 wikipedia_url = 'https://imdb-api.com/en/API/Wikipedia/'
- 
+
+""" This function gets the movieID of what we're searching """ 
 def get_imbd_data(name):
     try:
         # set the headers with API key and content type
@@ -25,6 +26,7 @@ def get_imbd_data(name):
     except Exception as e:
         print('Unable to get imbd data', e)
 
+""" This function uses the returned movieID and gets the plot summary of that movie """ 
 def get_wikipedia_data(id):
     try:
         # set the headers with API key and content type
