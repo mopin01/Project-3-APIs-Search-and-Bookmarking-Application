@@ -41,12 +41,23 @@
     {% endfor %}
 </p>
 
+<button class="btn btn-success left" id="home-button" style="position: absolute; left: 0;"><a href="/">Home</a></button>
 
-        
-<button class="btn btn-success left" id="submit-button"> <a href="/">Home</a></button>
-        
+<button class="btn btn-success" id="add-bookmark-button" style="display: block; margin: 0 auto;" onclick="displayBookmarkAddedMessage('{{ overview_data.title }}')">Add Bookmark</button>
 
+<script>
+    function displayBookmarkAddedMessage(title) {
+        // Call the /add_bookmark/ route to add the bookmark to the database
+        fetch(`/add_bookmark/?title=${title}`).then(response => {
+            // Hide the "Add Bookmark" button and display the "bookmark added" message
+            document.querySelector('#add-bookmark-button').style.display = 'none';
+            document.querySelector('#bookmark-added-message').style.display = 'block';
+        });
+    }
+</script>
 
-    
+<div id="bookmark-added-message" style="display: none;">
+    Bookmark added!
+</div>
 
 {% endblock %}
