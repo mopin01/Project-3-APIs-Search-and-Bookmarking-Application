@@ -26,6 +26,19 @@
             </div>
             {% endfor %}
         </div>
+<!-- trailer_video -->
+
+{% if data %}
+
+<h2>{{ data.title }}</h2>
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/{{data.video_id}}"></iframe>
+
+{% else %} 
+
+<h2>Sorry, no trailer</h2>
+
+{% endif %}
 
         <p class="movie-detail">
             GENRE:
