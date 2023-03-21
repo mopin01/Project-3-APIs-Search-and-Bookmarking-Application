@@ -3,24 +3,24 @@
 {% block content %}
 <p>
     
-    MOVIE_ID: {{ overview_data.id }}<br>
-    ORIGINAL_TITLE: {{ overview_data.original_title }}<br>
-    TITLE: {{ overview_data.title }} <br>
-    RELEASE-DATE: {{ overview_data.release_date }}<br>
-    BUDGET: {{ business_data.budget }}<br>
-    REVENUE: {{ business_data.revenue }}<br>
+    MOVIE_ID: {{ data.id }}<br>
+    ORIGINAL_TITLE: {{ data.original_title }}<br>
+    TITLE: {{ data.title }} <br>
+    RELEASE-DATE: {{ data.release_date }}<br>
+    BUDGET: {{ data.budget }}<br>
+    REVENUE: {{ data.revenue }}<br>
     
     <p> 
-        OVERVIEW: {{ overview_data.overview }}
+        OVERVIEW: {{ data.overview }}
 </p>
 
 <p> 
-    SHORT WIKIPEDIA SUMMARY: {{ wikipedia_summary["plotShort"] }}
+    SHORT WIKIPEDIA SUMMARY: {{ data.plotShort }}
 
 </p>
 
 <p>
-    {% for image in image_list %}
+    {% for image in data.image_list %}
     <div>
         <img src= "{{ image }}"> <br>
     </div>
@@ -28,7 +28,7 @@
 </p>
 
 <p> GENRE:
-    {% for genre in genre_list %}
+    {% for genre in data.genre_list %}
 
     {{ genre }}
     {% endfor %}
@@ -36,14 +36,14 @@
 
 <p>PRODUCTION COMPANIES:
     <br> 
-    {%for company in production_companies_list %}
+    {%for company in data.production_companies_list %}
     {{ company }}<br>
     {% endfor %}
 </p>
 
 <button class="btn btn-success left" id="home-button" style="position: absolute; left: 0;"><a href="/">Home</a></button>
 
-<button class="btn btn-success" id="add-bookmark-button" style="display: block; margin: 0 auto;" onclick="displayBookmarkAddedMessage('{{ overview_data.title }}')">Add Bookmark</button>
+<button class="btn btn-success" id="add-bookmark-button" style="display: block; margin: 0 auto;" onclick="displayBookmarkAddedMessage('{{ data.title }}')">Add Bookmark</button>
 
 <script>
     function displayBookmarkAddedMessage(title) {
