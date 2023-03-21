@@ -15,17 +15,28 @@ def get_overview(name):
             'query' : name,
             'api_key' : MOVIE_API_KEY
         }
-        response = requests.get(search_url, params=params).json()
-        overview_data = {
-            'overview' : response.get('results')[0].get('overview'),
-            'id': response.get('results')[0].get('id'),
-            'release_date' : response.get('results')[0].get('release_date'),
-            'original_title' : response.get('results')[0].get('original_title'),
-            'title' : response.get('results')[0].get('title')
-        }
+        response = get_json_response(search_url,params)
+        overview_data = load_overview_data(response)
         return overview_data
     except Exception as e:
         print('Unable to fetch data', e)
+
+def load_overview_data(response):
+    """ This methods gets the overview data dictionary required from the response json data"""
+    try:
+        sub_response = response.get('results')[0]
+        overview_data = {
+                'overview' : sub_response.get('overview'),
+                'id': sub_response.get('id'),
+                'release_date' : sub_response.get('release_date'),
+                'original_title' : sub_response.get('original_title'),
+                'title' : sub_response.get('title')
+            }
+        return overview_data
+    except Exception as e:
+        print('Unable to fetch data', e)
+    
+    
 
 def get_image(id):
     """ This function generates the images of the movie using the movie id """
@@ -34,7 +45,8 @@ def get_image(id):
         params = {
             'api_key' : MOVIE_API_KEY
         }
-        image_response = requests.get(image_url, params=params).json()
+        #image_response = requests.get(image_url, params=params).json()
+        image_response = get_json_response(image_url, params)
         image_url_list = []
         for i in range(5):
             image_path = image_response['backdrops'][i]['file_path']
@@ -52,7 +64,8 @@ def more_info(id):
         params = {
            'api_key' : MOVIE_API_KEY 
         }
-        response_data = requests.get(base_url, params=params).json()
+        #response_data = requests.get(base_url, params=params).json()
+        response_data = get_json_response(base_url,params)
         genre_info = response_data['genres']
         genre_list = []
         for genre in genre_info:
@@ -70,6 +83,14 @@ def more_info(id):
     except Exception as e:
         print('Unable to fetch genre data', e)
         
+        
+def get_json_response(url, params):
+    """ This function connects to the url with the params given and gets the json response """
+    try:
+        response = requests.get(url, params=params).json()
+        return response
+    except Exception as e:
+        print('Unable to fetch data', e)
         
     
         
