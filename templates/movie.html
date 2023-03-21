@@ -55,7 +55,8 @@
             {% endfor %}
         </p>
 
-        <button class="btn btn-success left" id="home-button"><a href="/">Home</a></button>
+        <button class="btn btn-success" id="home-button"><a href="/">Home</a></button>
+        <button class="btn btn-success"><a href="/show_bookmarks/" class="text-white">Bookmarks</a></button>
 
         <button class="btn btn-success" id="add-bookmark-button" onclick="displayBookmarkAddedMessage('{{ data.title }}')">Add Bookmark</button>
         <script>
@@ -72,6 +73,8 @@
         <div id="bookmark-added-message" style="display: none;">
             Bookmark added!
         </div>
+
+
     </div>
 
 {% endblock %}

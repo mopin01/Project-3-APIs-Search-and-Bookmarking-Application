@@ -17,15 +17,21 @@
 </div>
 
 <div class="content m-4 center-block text-center">
-    
-    <button class="btn btn-success"><a href="/post_quote/" class="text-white">Random Quote</a></button>
-        
-</div>
-
-<div class="content m-4 center-block text-center">
 
     <button class="btn btn-success"><a href="/show_bookmarks/" class="text-white">Bookmarks</a></button>
 
+</div>
+
+<div class="content m-4 center-block text-center">
+    
+    <h1 id="movie-quoter">Movie Quoter</h1>
+    <div id="quote">
+        "{{ movie_quote.quote }}"
+    </div>    
+    <div>
+        - {{ movie_quote.author }}
+    </div>
+        
 </div>
 
 {% endblock %}
