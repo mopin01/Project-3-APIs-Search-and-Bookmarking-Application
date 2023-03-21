@@ -13,7 +13,8 @@ cache = Cache()
 
 @app.route('/')
 def homepage():
-    return render_template('index.html')
+    movie_quote = moviequotes_api.get_quote()
+    return render_template('index.html', movie_quote=movie_quote)
 
 @app.route('/get_movie')
 def movie_info():
