@@ -18,25 +18,28 @@ def homepage():
 @app.route('/get_movie')
 def movie_info():
     movie_title = request.args.get('movie_name')
-    overview_data = movie_db_api.get_overview(movie_title)
-    imbd_data = imbd_api.get_imbd_data(movie_title)
-    youtube_trailer = youtube_trailer_api.get_movie_trailer(movie_title)
-    wikipedia_summary = imbd_api.get_wikipedia_data(imbd_data['id'])
-    image_list = movie_db_api.get_image(overview_data['id'])
-    genre_list, business_data, production_companies_list = movie_db_api.more_info(overview_data['id'])
+    if not cache.movie_exists(movie_title):
+        overview_data = movie_db_api.get_overview(movie_title)
+        imbd_data = imbd_api.get_imbd_data(movie_title)
+        youtube_trailer = youtube_trailer_api.get_movie_trailer(movie_title)
+        wikipedia_summary = imbd_api.get_wikipedia_data(imbd_data['id'])
+        image_list = movie_db_api.get_image(overview_data['id'])
+        genre_list, business_data, production_companies_list = movie_db_api.more_info(overview_data['id'])
 
-    data = {
-        'overview_data' : overview_data,
-        'business_data' : business_data,
-        'wikipedia_summary' : wikipedia_summary,
-        'production_companies_list' : production_companies_list,
-        'image_list' : image_list,
-        'genre_list' : genre_list,
-        'youtube_trailer' : youtube_trailer
-    }
+        data = {
+            'overview_data' : overview_data,
+            'business_data' : business_data,
+            'wikipedia_summary' : wikipedia_summary,
+            'production_companies_list' : production_companies_list,
+            'image_list' : image_list,
+            'genre_list' : genre_list,
+            'youtube_trailer' : youtube_trailer
+        }
 
-    data = format_data(data)
-    cache.add_movie(data)
+        data = format_data(data)
+        cache.add_movie(data)
+    else:
+        data = cache.get_movie(movie_title)
 
     return render_template('movie.html', data=extract_data(data))
 

@@ -72,6 +72,24 @@ class Cache:
                 raise e
     
 
+    def movie_exists(self, title):
+        conn = self._get_conn()
+        with conn:
+            try:
+                self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="movies"')
+                if self.cur.fetchone() is None:
+                    return False
+                
+                self.cur.execute("SELECT * FROM movies WHERE title = ?", (title,))
+                result = self.cur.fetchone()
+                if result is not None:
+                    return True
+                else:
+                    return False
+            except sqlite3.Error as e:
+                raise e
+
+
     def clear_cache(self):
         # Clear all data from the 'movies' table
         conn = self._get_conn()
