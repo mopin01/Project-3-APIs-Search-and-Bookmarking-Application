@@ -23,16 +23,37 @@ def movie_info():
     image_list = movie_db_api.get_image(overview_data['id'])
     genre_list, business_data, production_companies_list = movie_db_api.more_info(overview_data['id'])
 
-    # TEMPORARY- Condenses data into single list for database
-    data = {}
-    data.update(**overview_data)
-    data['image_list'] = json.dumps(image_list)
-    data['genre_list'] = json.dumps(genre_list)
-    data.update(**business_data)
-    data['production_companies_list'] = json.dumps(production_companies_list)
+    data = {
+        'overview_data' : overview_data,
+        'business_data' : business_data,
+        'wikipedia_summary' : wikipedia_summary,
+        'production_companies_list' : production_companies_list,
+        'image_list' : image_list,
+        'genre_list' : genre_list
+    }
+
+    data = format_data(data)
     cache.add_movie(data)
 
-    return render_template('movie.html', overview_data=overview_data, wikipedia_summary=wikipedia_summary, image_list=image_list,  genre_list=genre_list, business_data=business_data, production_companies_list=production_companies_list)
+    return render_template('movie.html', data=extract_data(data))
+
+def format_data(data):
+    new_data = {}
+    for key, value in data.items():
+        if isinstance(value, dict):
+            for sub_key, sub_value in value.items():
+                new_data[sub_key] = sub_value
+        else:
+            new_data[key] = json.dumps(value)
+    return new_data
+
+def extract_data(data):
+    for key, value in data.items():
+        try:
+            data[key] = json.loads(value)
+        except:
+            pass
+    return data
 
 @app.route('/post_quote/')
 def post_quote():
@@ -56,23 +77,7 @@ def view_bookmark():
     title = request.args.get('title')
     data = bookmarks.get_movie_by_title(title)
 
-    # TEMPORARY- Extracts and formats data to be passed to movie.html
-    overview_data = {
-        'id' : data['id'],
-        'original_title' : data['original_title'],
-        'title' : data['title'],
-        'release_date' : data['release_date'],
-        'overview' : data['overview']
-    }
-    image_list = json.loads(data['image_list'])
-    genre_list = json.loads(data['genre_list'])
-    business_data = {
-        'budget' : data['budget'],
-        'revenue' : data['revenue']
-    }
-    production_companies_list = json.loads(data['production_companies_list'])
-
-    return render_template('movie.html', overview_data=overview_data, image_list=image_list, genre_list=genre_list, business_data=business_data, production_companies_list=production_companies_list)
+    return render_template('movie.html', data=extract_data(data))
 
 if __name__ == '__main__':
     app.run()
