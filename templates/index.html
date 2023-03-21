@@ -4,29 +4,29 @@
     <div class="content m-4 center-block">
         <h1>Movie API Search Tool</h1>
     
-        <p>Uses The IMBD API, Wikipidia API, and the YouTube API to look up your favorite movies.</p>
-        
-        <form method="GET" action="/get_movie">
-        <label for="search-query">Search query: </label> 
+   <p class="text-center">Uses The IMBD API, Wikipidia API, and the YouTube API to look up your favorite movies.</p>
+    
+    <form class="text-center" method="GET" action="/get_movie">
+        <label for="movie_name">Search query:</label> 
         <br>
-        <input id="movie_name" name="movie_name">
+        <input id="movie_name" name="movie_name" class="form-control" placeholder="Enter movie name">
         <br>
         <input class="btn btn-success" id="submit-button" type="submit" value="GO" />
-        <form>
-            
-    </div>
-
-    <div class="content m-4 center-block">
+    </form>
         
-        <button class="btn btn-success" id="submit-button"> <a href="/post_quote/">Random Quote</a></button>
-            
-    </div>
+</div>
 
-    <div class="content m-4 center-block">
+<div class="content m-4 center-block text-center">
+    
+    <button class="btn btn-success"><a href="/post_quote/" class="text-white">Random Quote</a></button>
+        
+</div>
 
-        <button class="btn btn-success" id="bookmark-button"> <a href="/show_bookmarks/">Bookmarks</a></button>
+<div class="content m-4 center-block text-center">
 
-    </div>
+    <button class="btn btn-success"><a href="/show_bookmarks/" class="text-white">Bookmarks</a></button>
+
+</div>
 
 {% endblock %}
   
