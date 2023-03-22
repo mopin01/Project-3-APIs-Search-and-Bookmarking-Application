@@ -86,5 +86,9 @@ def view_bookmark():
 
     return render_template('movie.html', data=extract_data(data))
 
+@app.errorhandler(Exception)
+def handle_error(e):
+    return render_template('error.html', error=e)
+
 if __name__ == '__main__':
     app.run()
