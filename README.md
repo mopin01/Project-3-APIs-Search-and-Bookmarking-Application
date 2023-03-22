@@ -23,6 +23,7 @@ Once you clone the repo, you will want to install all the modules so that the re
 3. Create a [RapidAPI key](https://docs.rapidapi.com/docs/what-is-rapidapi#for-developers).
 4. Create a [IMBD API key](https://imdb-api.com/).
 5. Create an `.env` with your API keys.
+6. To start, open up a terminal or a command prompt and navigate to the directory of your Python project. Once you are there, type the following command: `pip install -r requirements.txt`
 
 To utilize API keys, you will need to create a .env file in your main directory. You will not be able to upload it to this repo as most .gitignore will ignore the file. This is for security reasons as you do not want to post your API Keys to these services out in the open. When you are done creating the .env file, insert your respective keys into the text below and then save the .env file.
 
