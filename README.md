@@ -1,6 +1,6 @@
 # Movie API Search Tool
 
-The user will enter a search query (actor, movie title etc). The app will contact the moviedb API to request search query data (like overview, release date etc) ; youtube API to request trailers data; and wikipedia API to request more background data (like casts etc). The app will present this data to the user in this way: web application
+The user will enter a search query (movie title). The app will contact the moviedb API to request search query data (like overview, release date etc) ; youtube API to request trailers data; and wikipedia API to request more background data (like casts etc). The app will present this data to the user in this way: web application
 
 ## Getting Started
 
