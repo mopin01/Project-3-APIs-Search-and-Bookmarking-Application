@@ -20,9 +20,6 @@ class Bookmarks:
             raise e
 
         self.cur = self.conn.cursor()
-        
-        # Temporary until delete function is added/accessible
-        self.delete_table()
 
 
     def create_table(self, data):
@@ -36,7 +33,7 @@ class Bookmarks:
                 # Add initial movie
                 columns = ', '.join(data.keys())
                 values = ', '.join(['?'] * len(data))
-                self.cur.execute(f'INSERT INTO movies ({columns}) VALUES ({values})', list(data.values()))
+                conn.execute(f'INSERT INTO movies ({columns}) VALUES ({values})', list(data.values()))
             except sqlite3.Error as e:
                 raise e
     
@@ -54,9 +51,7 @@ class Bookmarks:
                         # Insert movie
                         columns = ', '.join(data.keys())
                         values = ', '.join(['?'] * len(data))
-                        self.cur.execute(f'INSERT INTO movies ({columns}) VALUES ({values})', list(data.values()))
-                    else:
-                        print('Movie already bookmarked')
+                        conn.execute(f'INSERT INTO movies ({columns}) VALUES ({values})', list(data.values()))
                 else:
                     # Create table if doesn't exist
                     self.create_table(data)
@@ -92,7 +87,7 @@ class Bookmarks:
         conn = self._get_conn()
         with conn:
             try:
-                self.cur.execute('DROP TABLE IF EXISTS movies')
+                conn.execute('DROP TABLE IF EXISTS movies')
             except sqlite3.Error as e:
                 raise e
     
@@ -101,7 +96,25 @@ class Bookmarks:
         conn = self._get_conn()
         with conn:
             try:
-                self.cur.execute('DELETE * FROM movies WHERE title=?', (title,))
+                conn.execute('DELETE FROM movies WHERE title=?', (title,))
+            except sqlite3.Error as e:
+                raise e
+    
+    
+    def movie_exists(self, title):
+        conn = self._get_conn()
+        with conn:
+            try:
+                self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="movies"')
+                if self.cur.fetchone() is None:
+                    return False
+                
+                self.cur.execute("SELECT * FROM movies WHERE title = ?", (title,))
+                result = self.cur.fetchone()
+                if result is not None:
+                    return True
+                else:
+                    return False
             except sqlite3.Error as e:
                 raise e
 
