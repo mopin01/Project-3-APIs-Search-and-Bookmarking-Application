@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request  # NOT the same as requests
+from flask import Flask, render_template, make_response, request  # NOT the same as requests
 from apis import movie_db_api 
 from apis import moviequotes_api
 from apis import imbd_api
@@ -42,7 +42,7 @@ def movie_info():
     else:
         data = cache.get_movie(movie_title)
 
-    return render_template('movie.html', data=extract_data(data))
+    return render_template('movie.html', data=extract_data(data), is_bookmarked=bookmarks.movie_exists(movie_title))
 
 def format_data(data):
     new_data = {}
@@ -72,7 +72,13 @@ def add_bookmark():
     title = request.args.get('title')
     data = cache.get_movie(title)
     bookmarks.add_movie(data)
-    return render_template('index.html')
+    return make_response("", 204)
+
+@app.route('/delete_bookmark/')
+def delete_bookmark():
+    title = request.args.get('title')
+    bookmarks.delete_movie(title)
+    return make_response("", 204)
 
 @app.route('/show_bookmarks/')
 def show_bookmarks():
@@ -83,8 +89,7 @@ def show_bookmarks():
 def view_bookmark():
     title = request.args.get('title')
     data = bookmarks.get_movie_by_title(title)
-
-    return render_template('movie.html', data=extract_data(data))
+    return render_template('movie.html', data=extract_data(data), is_bookmarked=True)
 
 @app.errorhandler(Exception)
 def handle_error(e):
