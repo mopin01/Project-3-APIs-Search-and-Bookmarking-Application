@@ -51,13 +51,13 @@ def get_image(id):
     except Exception as e:
         print('Unable to fetch image', e)
 
-def get_image_response(image_response):
+def get_image_response(image_response,number_of_image=5):
     """ This function returns a list of image related to the  movie , you can get n number of images by changing number_of_image """
-    number_of_image = 5
     image_url_list = []
     try:
         for img in range(number_of_image):
             image_path = image_response['backdrops'][img]['file_path']
+            print(img, image_path)
             image_path = base_image_url + image_path
             image_url_list.append(image_path)
         return image_url_list
