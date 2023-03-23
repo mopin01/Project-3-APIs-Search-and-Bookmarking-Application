@@ -2,8 +2,7 @@ import unittest
 from unittest.mock import patch
 import sys
 sys.path.append('../apis')
-#/Users/minleg/Desktop/Spring2023/SoftwareDevelopmentCapstone/Project/Project3/Project-3-APIs-Search-and-Bookmarking-Application/apis
-from movie_db_api import get_overview, get_json_response
+from movie_db_api import get_overview, get_json_response, get_image
 
 class TestMovieDbApi(unittest.TestCase):
         
@@ -21,12 +20,14 @@ class TestMovieDbApi(unittest.TestCase):
         self.assertEqual(overview['title'], 'RRR')
         
     @patch('requests.get')
-    def test_more_info(self, mock_data):
-        
-        
-        
-        
-    
+    def test_get_image(self, mock_data):
+        mock_image_url = 'https://image.tmdb.org/t/p/w500//rzdPqYx7Um4FUZeD8wpXqjAUcEm.jpg'
+        mock_image_url_list = [ mock_image_url,'https://image.tmdb.org/t/p/w500//6VmFqApQRyZZzmiGOQq2C92jyvH.jpg',
+                                'https://image.tmdb.org/t/p/w500//yDI6D5ZQh67YU4r2ms8qcSbAviZ.jpg','https://image.tmdb.org/t/p/w500//3WjbxaqYB4vAbdUfdr5vbglD2JZ.jpg','https://image.tmdb.org/t/p/w500//vIAm7UDNjGztvUYtDuS0in1VAXg.jpg']
+        #example_api_response = {"backdrops":[{"file_path": mock_image_url, "file_path":"/rzdPqYx7Um4FUZeD8wpXqjAUcEm.jpg"},{"file_path":"/6VmFqApQRyZZzmiGOQq2C92jyvH.jpg"},{"file_path":"/yDI6D5ZQh67YU4r2ms8qcSbAviZ.jpg"}]}
+        mock_data.return_value.json.return_value = mock_image_url_list
+        image_url_list = get_image(597)
+        self.assertIn(mock_image_url, image_url_list)
 
 if __name__ == '__main__':
     unittest.main()
