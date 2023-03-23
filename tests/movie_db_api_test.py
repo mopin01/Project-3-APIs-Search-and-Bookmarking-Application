@@ -20,6 +20,10 @@ class TestMovieDbApi(unittest.TestCase):
         overview = get_overview('RRR')
         self.assertEqual(overview['title'], 'RRR')
         
+    @patch('requests.get')
+    def test_more_info(self, mock_data):
+        
+        
         
         
     
