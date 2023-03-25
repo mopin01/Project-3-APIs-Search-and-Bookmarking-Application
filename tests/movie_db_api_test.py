@@ -28,11 +28,11 @@ class TestMovieDbApi(unittest.TestCase):
         
     @patch('requests.get')
     def test_get_image(self, mock_data):
-        mock_image_url = 'https://image.tmdb.org/t/p/w500//rzdPqYx7Um4FUZeD8wpXqjAUcEm.jpg'
-        mock_image_url_list = [ mock_image_url,'https://image.tmdb.org/t/p/w500//6VmFqApQRyZZzmiGOQq2C92jyvH.jpg',
-                                'https://image.tmdb.org/t/p/w500//yDI6D5ZQh67YU4r2ms8qcSbAviZ.jpg',
-                                'https://image.tmdb.org/t/p/w500//3WjbxaqYB4vAbdUfdr5vbglD2JZ.jpg',
-                                'https://image.tmdb.org/t/p/w500//vIAm7UDNjGztvUYtDuS0in1VAXg.jpg']
+        mock_image_url = 'https://image.tmdb.org/t/p/w500/rzdPqYx7Um4FUZeD8wpXqjAUcEm.jpg'
+        mock_image_url_list = [ mock_image_url,'https://image.tmdb.org/t/p/w500/6VmFqApQRyZZzmiGOQq2C92jyvH.jpg',
+                                'https://image.tmdb.org/t/p/w500/yDI6D5ZQh67YU4r2ms8qcSbAviZ.jpg',
+                                'https://image.tmdb.org/t/p/w500/3WjbxaqYB4vAbdUfdr5vbglD2JZ.jpg',
+                                'https://image.tmdb.org/t/p/w500/vIAm7UDNjGztvUYtDuS0in1VAXg.jpg']
         example_api_response = {"backdrops":[{"file_path": '/rzdPqYx7Um4FUZeD8wpXqjAUcEm.jpg'}, 
                                              {"file_path":"/6VmFqApQRyZZzmiGOQq2C92jyvH.jpg"},
                                              {"file_path":"/yDI6D5ZQh67YU4r2ms8qcSbAviZ.jpg"},
