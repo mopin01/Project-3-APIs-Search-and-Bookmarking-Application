@@ -5,16 +5,15 @@ import os
 
 class Bookmarks:
 
-    def __init__(self):
+    def __init__(self, db_name='bookmarks.db'):
         self.conn_per_thread = threading.local()
-
+        self.db_name = db_name
         try:
             self.conn = sqlite3.connect(
                 os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)),
-                    'bookmarks.db'
-                ),
-                check_same_thread=False
+                        os.path.dirname(os.path.abspath(__file__)), 
+                        self.db_name),
+                    check_same_thread=False
             )
         except sqlite3.Error as e:
             raise e
@@ -23,13 +22,13 @@ class Bookmarks:
 
 
     def create_table(self, data):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 # Create table with collumns determined by the data being fed
                 column_names = ", ".join(key for key in data.keys())
-                self.cur.execute(f'CREATE TABLE IF NOT EXISTS movies ({column_names})')
-
+                conn.execute(f'CREATE TABLE IF NOT EXISTS movies ({column_names})')
+                
                 # Add initial movie
                 columns = ', '.join(data.keys())
                 values = ', '.join(['?'] * len(data))
@@ -39,7 +38,7 @@ class Bookmarks:
     
 
     def add_movie(self, data):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 # Check if table exists
@@ -60,7 +59,7 @@ class Bookmarks:
 
 
     def get_all_titles(self):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 self.cur.execute('SELECT title FROM movies')
@@ -71,7 +70,7 @@ class Bookmarks:
 
 
     def get_movie_by_title(self, title):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 self.cur.execute('SELECT * FROM movies WHERE title=?', (title,))
@@ -81,19 +80,10 @@ class Bookmarks:
                 return data
             except sqlite3.Error as e:
                 raise e
-
-
-    def delete_table(self):
-        conn = self._get_conn()
-        with conn:
-            try:
-                conn.execute('DROP TABLE IF EXISTS movies')
-            except sqlite3.Error as e:
-                raise e
     
 
     def delete_movie(self, title):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 conn.execute('DELETE FROM movies WHERE title=?', (title,))
@@ -102,7 +92,7 @@ class Bookmarks:
     
     
     def movie_exists(self, title):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="movies"')
@@ -117,18 +107,12 @@ class Bookmarks:
                     return False
             except sqlite3.Error as e:
                 raise e
+    
 
-
-    def _get_conn(self):
-        if not hasattr(self.conn_per_thread, 'conn'):
+    def delete_table(self):
+        conn = self.conn
+        with conn:
             try:
-                self.conn_per_thread.conn = sqlite3.connect(
-                    os.path.join(
-                        os.path.dirname(os.path.abspath(__file__)),
-                        'bookmarks.db'
-                    ),
-                    check_same_thread=False
-                )
+                conn.execute('DROP TABLE IF EXISTS movies')
             except sqlite3.Error as e:
                 raise e
-        return self.conn_per_thread.conn

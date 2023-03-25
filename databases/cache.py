@@ -4,26 +4,26 @@ import os
 
 class Cache:
 
-    def __init__(self):
+    def __init__(self, db_name='cache.db'):
         self.conn_per_thread = threading.local()
-        
+        self.db_name = db_name
         try:
             self.conn = sqlite3.connect(
                 os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),
-                    'cache.db'
-                ),
+                    self.db_name),
                 check_same_thread=False
             )
         except sqlite3.Error as e:
             raise e
+        
         self.cur = self.conn.cursor()
         # Clear cache on startup
         self.clear_cache()
 
 
     def create_table(self, data):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 # Create table with collumns determined by the data being fed
@@ -39,7 +39,7 @@ class Cache:
 
 
     def add_movie(self, data):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 # Check if table exists
@@ -60,7 +60,7 @@ class Cache:
 
 
     def get_movie(self, title):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 self.cur.execute('SELECT * FROM movies WHERE title=?', (title,))
@@ -73,7 +73,7 @@ class Cache:
     
 
     def movie_exists(self, title):
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="movies"')
@@ -92,25 +92,18 @@ class Cache:
 
     def clear_cache(self):
         # Clear all data from the 'movies' table
-        conn = self._get_conn()
+        conn = self.conn
         with conn:
             try:
                 self.cur.execute('DROP TABLE IF EXISTS movies')
             except sqlite3.Error as e:
                 raise e
-
-
-    def _get_conn(self):
-        # Get the database connection for the current thread
-        if not hasattr(self.conn_per_thread, 'conn'):
+    
+    
+    def delete_table(self):
+        conn = self.conn
+        with conn:
             try:
-                self.conn_per_thread.conn = sqlite3.connect(
-                    os.path.join(
-                        os.path.dirname(os.path.abspath(__file__)),
-                        'cache.db'
-                    ),
-                    check_same_thread=False  # Allow connections from multiple threads
-                )
+                conn.execute('DROP TABLE IF EXISTS movies')
             except sqlite3.Error as e:
                 raise e
-        return self.conn_per_thread.conn
