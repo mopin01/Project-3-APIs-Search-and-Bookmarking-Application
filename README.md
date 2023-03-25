@@ -48,7 +48,7 @@ App will be running on http://127.0.0.1:5000
 
 To run tests, use this command from the root directory of the project
 
-`python -m unittest discover tests`
+`python -m unittest discover -s tests -p '*_test.py'`
 
 The discover option will find and run all the tests in the tests directory. Otherwise you can run the tests individually in the tests folder.
 
