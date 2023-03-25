@@ -71,7 +71,7 @@ def get_image_response(image_response,number_of_image=5):
                 image_url_list.append(image_path)
             return image_url_list
         else: # if no images avaiable at all
-            return None, 'No images available for this movie.'
+            return None
                 
     except Exception as e:
         print('Unable to get images', e)
@@ -132,9 +132,11 @@ def get_json_response(url, params):
     """ This function connects to the url with the params given and gets the json response """
     try:
         response = requests.get(url, params=params).json()
+        # response.raise_for_status()
         return response
     except Exception as e:
         print('Unable to fetch data', e)
+
         
     
         
