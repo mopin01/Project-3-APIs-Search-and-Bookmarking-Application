@@ -12,20 +12,20 @@ bookmarks = Bookmarks()
 cache = Cache()
 
 @app.route('/')
-def homepage():
-    movie_quote = moviequotes_api.get_quote()
+async def homepage():
+    movie_quote = await moviequotes_api.get_quote()
     return render_template('index.html', movie_quote=movie_quote)
 
 @app.route('/get_movie')
-def movie_info():
+async def movie_info():
     movie_title = request.args.get('movie_name')
     if not cache.movie_exists(movie_title):
         overview_data = movie_db_api.get_overview(movie_title)
-        imbd_data = imbd_api.get_imbd_data(movie_title)
-        youtube_trailer = youtube_trailer_api.get_movie_trailer(movie_title)
-        wikipedia_summary = imbd_api.get_wikipedia_data(imbd_data['id'])
         image_list = movie_db_api.get_image(overview_data['id'])
         genre_list, business_data, production_companies_list = movie_db_api.more_info(overview_data['id'])
+        imbd_data = await imbd_api.get_imbd_data(movie_title)
+        wikipedia_summary = await imbd_api.get_wikipedia_data(imbd_data['id'])
+        youtube_trailer = youtube_trailer_api.get_movie_trailer(movie_title)
 
         data = {
             'overview_data' : overview_data,
