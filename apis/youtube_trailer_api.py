@@ -12,6 +12,7 @@ if not API_KEY:
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
 
+
 def get_movie_trailer(movie_title):
     try:
         youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=API_KEY)
@@ -20,6 +21,7 @@ def get_movie_trailer(movie_title):
             type='video',
             part='id,snippet',
             maxResults=1
+            
         ).execute()
 
         video_id = search_result['items'][0]['id']['videoId']

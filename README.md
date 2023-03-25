@@ -1,6 +1,6 @@
 # Movie API Search Tool
 
-The user will enter a search query (actor, movie title etc). The app will contact the moviedb API to request search query data (like overview, release date etc) ; youtube API to request trailers data; and wikipedia API to request more background data (like casts etc). The app will present this data to the user in this way: web application
+The user will enter a search query (movie title). The app will contact the moviedb API to request search query data (like overview, release date etc) ; youtube API to request trailers data; and wikipedia API to request more background data (like casts etc). The app will present this data to the user in this way: web application
 
 ## Getting Started
 
@@ -23,6 +23,7 @@ Once you clone the repo, you will want to install all the modules so that the re
 3. Create a [RapidAPI key](https://docs.rapidapi.com/docs/what-is-rapidapi#for-developers).
 4. Create a [IMBD API key](https://imdb-api.com/).
 5. Create an `.env` with your API keys.
+6. To start, open up a terminal or a command prompt and navigate to the directory of your Python project. Once you are there, type the following command: `pip install -r requirements.txt`
 
 To utilize API keys, you will need to create a .env file in your main directory. You will not be able to upload it to this repo as most .gitignore will ignore the file. This is for security reasons as you do not want to post your API Keys to these services out in the open. When you are done creating the .env file, insert your respective keys into the text below and then save the .env file.
 
@@ -42,6 +43,14 @@ flask run
 ```
 
 App will be running on http://127.0.0.1:5000
+
+## Tests
+
+To run tests, use this command from the root directory of the project
+
+`python -m unittest discover -s tests -p '*_test.py'`
+
+The discover option will find and run all the tests in the tests directory. Otherwise you can run the tests individually in the tests folder.
 
 ## Authors
 

@@ -55,23 +55,30 @@
             {% endfor %}
         </p>
 
-        <button class="btn btn-success left" id="home-button"><a href="/">Home</a></button>
+        <button class="btn btn-success" id="home-button"><a href="/">Home</a></button>
+        <button class="btn btn-success"><a href="/show_bookmarks/" class="text-white">Bookmarks</a></button>
 
-        <button class="btn btn-success" id="add-bookmark-button" onclick="displayBookmarkAddedMessage('{{ data.title }}')">Add Bookmark</button>
+        {% if is_bookmarked %}
+            <button class="btn btn-success" id="bookmark-button">Delete Bookmark</button>
+        {% else %}
+            <button class="btn btn-success" id="bookmark-button">Add Bookmark</button>
+        {% endif %}
+
         <script>
-            function displayBookmarkAddedMessage(title) {
-                // Call the /add_bookmark/ route to add the bookmark to the database
-                fetch(`/add_bookmark/?title=${title}`).then(response => {
-                    // Hide the "Add Bookmark" button and display the "bookmark added" message
-                    document.querySelector('#add-bookmark-button').style.display = 'none';
-                    document.querySelector('#bookmark-added-message').style.display = 'block';
-                });
-            }
+            var bookmarkButton = document.getElementById('bookmark-button');
+            bookmarkButton.addEventListener('click', function(event) {
+                event.preventDefault(); // prevent default form submission behavior
+                if (bookmarkButton.innerHTML === 'Add Bookmark') {
+                    bookmarkButton.innerHTML = 'Delete Bookmark';
+                    window.location.href = "/add_bookmark?title={{ data.title }}";
+                } else {
+                    bookmarkButton.innerHTML = 'Add Bookmark';
+                    window.location.href = "/delete_bookmark?title={{ data.title }}";
+                }
+            });
         </script>
-
-        <div id="bookmark-added-message" style="display: none;">
-            Bookmark added!
-        </div>
+        
+        
     </div>
 
 {% endblock %}
