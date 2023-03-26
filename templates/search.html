@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+<h1>Search Results for '{{ movie_title }}'</h1>
+<ul>
+    {% for movie in search_movies %}
+
+    <div >
+        <div method="GET" href="/get_movie" id="{{movie['title']}}" name="{{ movie['title'] }}"> {{ movie['title'] }}</div>
+    </div>
+
+    {% endfor %}
+</ul>
+
+{% endblock %}

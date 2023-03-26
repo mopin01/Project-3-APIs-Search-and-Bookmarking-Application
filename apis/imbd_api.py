@@ -13,6 +13,29 @@ apiKey = os.getenv('IMBD_API_KEY')
 search_url = "https://imdb-api.com/en/API/SearchMovie"
 wikipedia_url = 'https://imdb-api.com/en/API/Wikipedia/'
 
+async def search_movies(name):
+    try:
+        # Set the headers with API key and content type
+        params = {
+            'apiKey': apiKey,
+            'expression': name
+        }
+        async with aiohttp.ClientSession() as session:
+            async with session.get(search_url, params=params) as response:
+                data = await response.json()
+
+        # Extract the ID and title of all movies that match the search
+        imdb_data = []
+        for result in data.get('results', []):
+            imdb_data.append({
+                'title': result.get('title')
+            })
+        print(imdb_data)
+        return imdb_data
+
+    except Exception as e:
+        print('Unable to get search movies', e)
+
 async def get_imbd_data(name):
     try:
         # Set the headers with API key and content type
