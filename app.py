@@ -16,9 +16,15 @@ async def homepage():
     movie_quote = await moviequotes_api.get_quote()
     return render_template('index.html', movie_quote=movie_quote)
 
+@app.route('/search_movies')
+async def search():
+    movie_title = request.args.get('movie_name')
+    search_movies = await imbd_api.search_movies(movie_title)
+    return render_template('search.html', movie_title=movie_title, search_movies=search_movies)
+
 @app.route('/get_movie')
 async def movie_info():
-    movie_title = request.args.get('movie_name')
+    movie_title = request.args.get('movie_title')
     if not cache.movie_exists(movie_title):
         overview_data = movie_db_api.get_overview(movie_title)
         image_list = movie_db_api.get_image(overview_data['id'])
