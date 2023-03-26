@@ -28,12 +28,12 @@ class Cache:
             try:
                 # Create table with collumns determined by the data being fed
                 column_names = ", ".join(key for key in data.keys())
-                self.cur.execute(f'CREATE TABLE IF NOT EXISTS movies ({column_names})')
+                conn.execute(f'CREATE TABLE IF NOT EXISTS movies ({column_names})')
 
                 # Add initial movie
                 columns = ', '.join(data.keys())
                 values = ', '.join(['?'] * len(data))
-                self.cur.execute(f'INSERT INTO movies ({columns}) VALUES ({values})', list(data.values()))
+                conn.execute(f'INSERT INTO movies ({columns}) VALUES ({values})', list(data.values()))
             except sqlite3.Error as e:
                 raise e
 
@@ -51,7 +51,7 @@ class Cache:
                         # Insert movie
                         columns = ', '.join(data.keys())
                         values = ', '.join(['?'] * len(data))
-                        self.cur.execute(f'INSERT INTO movies ({columns}) VALUES ({values})', list(data.values()))
+                        conn.execute(f'INSERT INTO movies ({columns}) VALUES ({values})', list(data.values()))
                 else:
                     # Create table if doesn't exist
                     self.create_table(data)
@@ -59,15 +59,29 @@ class Cache:
                 raise e
 
 
-    def get_movie(self, title):
+    def get_movie_by_title(self, title):
         conn = self.conn
         with conn:
             try:
-                self.cur.execute('SELECT * FROM movies WHERE title=?', (title,))
-                row = self.cur.fetchone()
-                columns = [col[0] for col in self.cur.description]
-                data = dict(zip(columns, row))
-                return data
+                if self.movie_exists(title):
+                    self.cur.execute('SELECT * FROM movies WHERE title=?', (title,))
+                    row = self.cur.fetchone()
+                    columns = [col[0] for col in self.cur.description]
+                    data = dict(zip(columns, row))
+                    return data
+                else:
+                    raise ValueError(f"Movie with title '{title}' not found")
+            except sqlite3.Error as e:
+                raise e
+    
+
+    def get_all_titles(self):
+        conn = self.conn
+        with conn:
+            try:
+                self.cur.execute('SELECT title FROM movies')
+                titles = self.cur.fetchall()
+                return [title[0].replace("'", "").replace("(", "").replace(")", "") for title in titles]
             except sqlite3.Error as e:
                 raise e
     
@@ -95,7 +109,9 @@ class Cache:
         conn = self.conn
         with conn:
             try:
-                self.cur.execute('DROP TABLE IF EXISTS movies')
+                self.cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='movies'")
+                if self.cur.fetchone():
+                    conn.execute('DELETE FROM movies')
             except sqlite3.Error as e:
                 raise e
     

@@ -45,8 +45,7 @@ class Bookmarks:
                 self.cur.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="movies"')
                 if self.cur.fetchone() is not None:
                     # Check if movie already exists
-                    self.cur.execute('SELECT * FROM movies WHERE title=?', (data.get('title'),))
-                    if self.cur.fetchone() is None:
+                    if not self.movie_exists(data.get('title')):
                         # Insert movie
                         columns = ', '.join(data.keys())
                         values = ', '.join(['?'] * len(data))
@@ -73,11 +72,14 @@ class Bookmarks:
         conn = self.conn
         with conn:
             try:
-                self.cur.execute('SELECT * FROM movies WHERE title=?', (title,))
-                row = self.cur.fetchone()
-                columns = [col[0] for col in self.cur.description]
-                data = dict(zip(columns, row))
-                return data
+                if self.movie_exists(title):
+                    self.cur.execute('SELECT * FROM movies WHERE title=?', (title,))
+                    row = self.cur.fetchone()
+                    columns = [col[0] for col in self.cur.description]
+                    data = dict(zip(columns, row))
+                    return data
+                else:
+                    raise ValueError(f"Movie with title '{title}' not found")
             except sqlite3.Error as e:
                 raise e
     
@@ -86,7 +88,10 @@ class Bookmarks:
         conn = self.conn
         with conn:
             try:
-                conn.execute('DELETE FROM movies WHERE title=?', (title,))
+                if self.movie_exists(title):
+                    conn.execute('DELETE FROM movies WHERE title=?', (title,))
+                else:
+                    raise ValueError(f"Movie with title '{title}' not found")
             except sqlite3.Error as e:
                 raise e
     
