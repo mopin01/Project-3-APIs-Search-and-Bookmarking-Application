@@ -35,16 +35,15 @@ def search_movies(name):
     except Exception as e:
         print('Unable to get search movies', e)
 
-async def get_imbd_data(name):
+def get_imbd_data(name):
     try:
         # Set the headers with API key and content type
         params = {
             'apiKey': apiKey,
             'expression': name
         }
-        async with aiohttp.ClientSession() as session:
-            async with session.get(search_url, params=params) as response:
-                data = await response.json()
+        response = requests.get(search_url, params=params)
+        data = response.json()
 
         # Extract the ID of the first movie that matches the search
         imbd_data = {
@@ -55,16 +54,15 @@ async def get_imbd_data(name):
     except Exception as e:
         print('Unable to get imbd data', e)
 
-async def get_wikipedia_data(id):
+def get_wikipedia_data(id):
     try:
         # Set the headers with API key and content type
         params = {
             'apiKey': apiKey,
             'id': id
         }
-        async with aiohttp.ClientSession() as session:
-            async with session.get(wikipedia_url, params=params) as response:
-                data = await response.json()
+        response = requests.get(wikipedia_url, params=params)
+        data = response.json()
 
         # Extract the plot summary of the movie
         wikiedia_summary = {
@@ -75,11 +73,11 @@ async def get_wikipedia_data(id):
     except Exception as e:
         print('Unable to get imbd data', e)
 
-async def main():
+def main():
     name = "The Godfather"
-    imdb_data = await get_imbd_data(name)
-    wikipedia_data = await get_wikipedia_data(imdb_data['id'])
+    imdb_data = get_imbd_data(name)
+    wikipedia_data = get_wikipedia_data(imdb_data['id'])
     print(wikipedia_data)
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
