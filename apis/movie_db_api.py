@@ -37,8 +37,6 @@ def load_overview_data(response):
         return overview_data
     except Exception as e:
         print('Unable to fetch data', e)
-    
-    
 
 def get_image(id):
     """ This function generates the images of the movie using the movie id """

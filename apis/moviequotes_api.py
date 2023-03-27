@@ -23,6 +23,7 @@ async def get_quote():
         }
         # send a post request to the API endpoint to get a random movie quote
         response = await asyncio.to_thread(requests.post, search_url, headers=headers)
+        response.raise_for_status() # check if there's any error in the response
         # extract the quote, author and category from the response
         data = response.json()[0]
         # extract the quote, author and category from the response
@@ -32,8 +33,13 @@ async def get_quote():
             'category': data['category']
         }
         return movie_quote
-    except Exception as e:
-        print('Unable to fetch quote', e)
+    except requests.exceptions.HTTPError as e:
+        print(f'HTTP error occurred: {e}')
+    except requests.exceptions.Timeout as e:
+        print(f'Request timed out: {e}')
+    except requests.exceptions.RequestException as e:
+        print(f'An error occurred while processing the request: {e}')
+
 
 async def main():
     # print a message indicating that a quote is being fetched
