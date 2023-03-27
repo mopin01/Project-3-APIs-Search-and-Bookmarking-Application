@@ -7,7 +7,7 @@
     {% for movie in search_movies %}
 
     <div >
-        <div method="GET" href="/get_movie" id="{{movie['title']}}" name="{{ movie['title'] }}"> {{ movie['title'] }}</div>
+        <a method="GET" href="/get_movie/title=`{{movie['title']}}`" id="{{loop.index}}" name="{{ movie['title'] }}"> {{ movie['title'] }}</a>
     </div>
 
     {% endfor %}

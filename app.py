@@ -22,9 +22,9 @@ async def search():
     search_movies = await imbd_api.search_movies(movie_title)
     return render_template('search.html', movie_title=movie_title, search_movies=search_movies)
 
-@app.route('/get_movie')
-async def movie_info():
-    movie_title = request.args.get('movie_title')
+@app.route('/get_movie/<title>')
+async def movie_info(title):
+    movie_title = request.args.get(title)
     if not cache.movie_exists(movie_title):
         overview_data = movie_db_api.get_overview(movie_title)
         image_list = movie_db_api.get_image(overview_data['id'])
