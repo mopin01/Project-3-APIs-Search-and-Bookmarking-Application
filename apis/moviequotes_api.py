@@ -8,6 +8,9 @@ load_dotenv()
 
 # get API key from environment variable
 X_RapidAPI_Key = os.getenv('X-RapidAPI-Key')
+if not apiKey:
+    raise ValueError('X_RapidAPI_Key not found in environment variables')
+
 search_url = 'https://andruxnet-random-famous-quotes.p.rapidapi.com/?count=1&cat=movies'
 
 # function to get a random famous movie quote

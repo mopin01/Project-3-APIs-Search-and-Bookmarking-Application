@@ -8,6 +8,8 @@ load_dotenv()
 
 # Get the API key from the environment variables
 apiKey = os.getenv('IMBD_API_KEY')
+if not apiKey:
+    raise ValueError('IMBD_API_KEY not found in environment variables')
 
 # Define the API endpoints
 search_url = "https://imdb-api.com/en/API/SearchMovie"
