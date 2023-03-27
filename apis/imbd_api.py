@@ -13,7 +13,7 @@ apiKey = os.getenv('IMBD_API_KEY')
 search_url = "https://imdb-api.com/en/API/SearchMovie"
 wikipedia_url = 'https://imdb-api.com/en/API/Wikipedia/'
 
-async def search_movies(name):
+def search_movies(name):
     try:
         # Set the headers with API key and content type
         params = {
