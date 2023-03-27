@@ -16,6 +16,14 @@ def homepage():
     movie_quote = moviequotes_api.get_quote()
     return render_template('index.html', movie_quote=movie_quote)
 
+@app.route('/search_movies')
+def search():
+    movie_title = request.args.get('movie_name')
+    search_movies = imbd_api.search_movies(movie_title)
+    if not movie_title:
+        return render_template('error.html', message='Please enter a movie title')
+    return render_template('search.html', movie_title=movie_title, search_movies=search_movies)
+
 @app.route('/get_movie')
 def movie_info():
     movie_title = request.args.get('movie_name')
@@ -40,9 +48,9 @@ def movie_info():
         data = format_data(data)
         cache.add_movie(data)
     else:
-        data = cache.get_movie_by_title(movie_title)
+        data = cache.get_movie_by_title(title)
 
-    return render_template('movie.html', data=extract_data(data), is_bookmarked=bookmarks.movie_exists(movie_title))
+    return render_template('movie.html', data=extract_data(data), is_bookmarked=bookmarks.movie_exists(title))
 
 def format_data(data):
     new_data = {}
