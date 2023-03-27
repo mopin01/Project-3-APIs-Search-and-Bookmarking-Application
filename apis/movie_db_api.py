@@ -7,7 +7,7 @@ load_dotenv()
 search_url = 'https://api.themoviedb.org/3/search/movie'
 base_image_url = 'https://image.tmdb.org/t/p/w500'
 MOVIE_API_KEY = os.getenv('MOVIE_API_KEY')
-if not apiKey:
+if not MOVIE_API_KEY:
     raise ValueError('MOVIE_API_KEY not found in environment variables')
 
 def get_overview(name):
