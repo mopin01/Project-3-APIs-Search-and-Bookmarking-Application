@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_KEY = os.getenv('YOUTUBE_API_KEY')
+if not API_KEY:
+    raise ValueError('API key not found. Please set YOUTUBE_API_KEY environment variable.')
+
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
 
@@ -13,17 +16,28 @@ YOUTUBE_API_VERSION = 'v3'
 def get_movie_trailer(movie_title):
     try:
         youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=API_KEY)
-        search_response = youtube.search().list(
+        search_result = youtube.search().list(
             q=movie_title + ' trailer',
             type='video',
             part='id,snippet',
             maxResults=1
             
         ).execute()
-        video_id = search_response['items'][0]['id']['videoId']
+
+        video_id = search_result['items'][0]['id']['videoId']
+        video_title = search_result['items'][0]['snippet']['title']
+        channel_name = search_result['items'][0]['snippet']['channelTitle']
+
+        print(f'Found video: {video_title} by {channel_name}')
         print(f'https://www.youtube.com/watch?v={video_id}')
-        print(search_response)
-        return {"video_id" : video_id , "title" : movie_title }
-        
+
+        return {
+            "video_id": video_id,
+            "video_title": video_title,
+            "channel_name": channel_name,
+            "movie_title": movie_title
+        }
+
     except HttpError as e:
-        print('An unexpected error occurred: %s' % e)
+        print(f'An error occurred while searching for {movie_title} trailer: {e}')
+        return None

@@ -40,7 +40,7 @@ async def movie_info():
         data = format_data(data)
         cache.add_movie(data)
     else:
-        data = cache.get_movie(movie_title)
+        data = cache.get_movie_by_title(movie_title)
 
     return render_template('movie.html', data=extract_data(data), is_bookmarked=bookmarks.movie_exists(movie_title))
 
@@ -70,7 +70,7 @@ def post_quote():
 @app.route('/add_bookmark/')
 def add_bookmark():
     title = request.args.get('title')
-    data = cache.get_movie(title)
+    data = cache.get_movie_by_title(title)
     bookmarks.add_movie(data)
     return make_response("", 204)
 
