@@ -30,7 +30,6 @@ async def search_movies(name):
             imdb_data.append({
                 'title': result.get('title')
             })
-        print(imdb_data)
         return imdb_data
 
     except Exception as e:
