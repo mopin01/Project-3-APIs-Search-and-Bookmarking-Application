@@ -6,11 +6,17 @@
     
     {% for movie in search_movies %}
     <div>
-        <a method="GET" href="/get_movie/title=`{{movie['title']}}`" id="{{loop.index}}" name="{{ movie['title'] }}"> {{ movie['title'] }}</a>
+      <a href="/get_movie/{{ movie['title'] }}"> {{ movie['title'] }}</a>
     </div>
     {% endfor %}
     
   {% else %}
     <p>No results found for "{{ movie_title }}".</p>
   {% endif %}
+  <button class="btn btn-success" id="home-button">
+    <a href="/">Home</a>
+</button>
+<button class="btn btn-success">
+    <a href="/show_bookmarks/" class="text-white">Bookmarks</a>
+</button>
 {% endblock %}
