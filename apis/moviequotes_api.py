@@ -8,6 +8,9 @@ load_dotenv()
 
 # get API key from environment variable
 X_RapidAPI_Key = os.getenv('X-RapidAPI-Key')
+if not X_RapidAPI_Key:
+    raise ValueError('X_RapidAPI_Key not found in environment variables')
+
 search_url = 'https://andruxnet-random-famous-quotes.p.rapidapi.com/?count=1&cat=movies'
 
 # function to get a random famous movie quote
@@ -20,6 +23,8 @@ def get_quote():
         }
         # send a post request to the API endpoint to get a random movie quote
         response = requests.post(search_url, headers=headers)
+        response.raise_for_status() # check if there's any error in the response
+
         # extract the quote, author and category from the response
         data = response.json()[0]
         # return a dictionary with the quote, author and category
@@ -29,8 +34,13 @@ def get_quote():
             'category': data['category']
         }
         return movie_quote
-    except Exception as e:
-        print('Unable to fetch quote', e)
+    except requests.exceptions.HTTPError as e:
+        print(f'HTTP error occurred: {e}')
+    except requests.exceptions.Timeout as e:
+        print(f'Request timed out: {e}')
+    except requests.exceptions.RequestException as e:
+        print(f'An error occurred while processing the request: {e}')
+
 
 # main block of code that runs if the script is executed directly
 if __name__ == '__main__':

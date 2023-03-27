@@ -7,6 +7,8 @@ load_dotenv()
 search_url = 'https://api.themoviedb.org/3/search/movie'
 base_image_url = 'https://image.tmdb.org/t/p/w500'
 MOVIE_API_KEY = os.getenv('MOVIE_API_KEY')
+if not MOVIE_API_KEY:
+    raise ValueError('MOVIE_API_KEY not found in environment variables')
 
 def get_overview(name):
     """ This function gets details about the movie by title - like release-date, overview and other useful information """
@@ -35,8 +37,6 @@ def load_overview_data(response):
         return overview_data
     except Exception as e:
         print('Unable to fetch data', e)
-    
-    
 
 def get_image(id):
     """ This function generates the images of the movie using the movie id """

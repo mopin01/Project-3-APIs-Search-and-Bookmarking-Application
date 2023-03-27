@@ -4,7 +4,7 @@
     <div class="content m-4 center-block">
         <h1>Movie API Search Tool</h1>
     
-   <p class="text-center">Uses The IMBD API, Wikipidia API, and the YouTube API to look up your favorite movies.</p>
+   <p class="text-center">Uses The  IMBD API, OpenMovieDB API, and the YouTube API to look up your favorite movies.</p>
     
     <form class="text-center" method="GET" action="/search_movies">
         <label for="movie_name">Search query:</label> 
@@ -25,13 +25,18 @@
 <div class="content m-4 center-block text-center">
     
     <h1 id="movie-quoter">Movie Quoter</h1>
-    <div id="quote">
-        "{{ movie_quote.quote }}"
-    </div>    
-    <div>
-        - {{ movie_quote.author }}
-    </div>
-        
+    {% if movie_quote %}
+        <div id="quote">
+            "{{ movie_quote.quote }}"
+        </div>    
+        <div>
+            - {{ movie_quote.author }}
+        </div>
+    {% else %}
+        <div id="quote">
+            Unable to retrieve movie quote.
+        </div>    
+    {% endif %}    
 </div>
 
 {% endblock %}
