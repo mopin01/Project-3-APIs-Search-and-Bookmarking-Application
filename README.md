@@ -1,6 +1,6 @@
 # Movie API Search Tool
 
-The user will enter a search query (movie title). The app will contact the moviedb API to request search query data (like overview, release date etc) ; youtube API to request trailers data; and wikipedia API to request more background data (like casts etc). The app will present this data to the user in this way: web application
+The user will enter a search query (movie title). The app will make an API call to the IMBD api and display a list of different movie titiles. When the user clicks on a movie title, the app will contact the moviedb API to request search query data (like overview, release date etc); youtube API to request trailers data; and IMBD API to the short plot summary of the movie. The app will present this data to the user in a web application. There's a cache and database built to manage bookmarked movies that a user can manage.
 
 ## Getting Started
 
@@ -12,7 +12,8 @@ These instructions will get you a copy of the project up and running on your loc
 - [Sqlite](https://www.sqlite.org/index.html)
 - [Flask](https://flask.palletsprojects.com/en/2.2.x/)
 - [Python-dotenv](https://pypi.org/project/python-dotenv/)
-- [Requests](https://pypi.org/project/requests/)
+- [Google client library ](https://developers.google.com/docs/api/quickstart/python)
+- [Requests-oauthlib](https://pypi.org/project/requests-oauthlib/)
 
 ### Installing
 

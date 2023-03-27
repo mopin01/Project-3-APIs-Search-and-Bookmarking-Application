@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Search Results for "{{ movie_title }}"</h1>
+  {% if search_movies %}
+    
+    {% for movie in search_movies %}
+    <div>
+      <a href="/get_movie/{{ movie['title'] }}"> {{ movie['title'] }}</a>
+    </div>
+    {% endfor %}
+    
+  {% else %}
+    <p>No results found for "{{ movie_title }}".</p>
+  {% endif %}
+  <button class="btn btn-success" id="home-button">
+    <a href="/">Home</a>
+</button>
+<button class="btn btn-success">
+    <a href="/show_bookmarks/" class="text-white">Bookmarks</a>
+</button>
+{% endblock %}
