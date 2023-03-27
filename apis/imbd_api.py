@@ -1,7 +1,6 @@
-import asyncio
+import requests
 import os
 from dotenv import load_dotenv
-import aiohttp
 
 # Load the environment variables from .env file
 load_dotenv()
@@ -14,15 +13,18 @@ search_url = "https://imdb-api.com/en/API/SearchMovie"
 wikipedia_url = 'https://imdb-api.com/en/API/Wikipedia/'
 
 def search_movies(name):
+
+""" This function gets the movieID of what we're searching """
+def get_imbd_data(name):
+
     try:
         # Set the headers with API key and content type
         params = {
             'apiKey': apiKey,
             'expression': name
         }
-        async with aiohttp.ClientSession() as session:
-            async with session.get(search_url, params=params) as response:
-                data = await response.json()
+        # Send a GET request to the IMBD API to search for movies
+        response = requests.get(search_url, params=params).json()
 
         # Extract the ID and title of all movies that match the search
         imdb_data = []
@@ -47,13 +49,15 @@ def get_imbd_data(name):
 
         # Extract the ID of the first movie that matches the search
         imbd_data = {
-            'id': data.get('results')[0].get('id')
+            'id': response.get('results')[0].get('id')
         }
         return imbd_data
 
     except Exception as e:
         print('Unable to get imbd data', e)
 
+
+""" This function uses the returned movieID and gets the plot summary of that movie """
 def get_wikipedia_data(id):
     try:
         # Set the headers with API key and content type
@@ -61,12 +65,17 @@ def get_wikipedia_data(id):
             'apiKey': apiKey,
             'id': id
         }
+
         response = requests.get(wikipedia_url, params=params)
         data = response.json()
 
+        # Send a GET request to the IMBD API to get the plot summary of a movie
+        response = requests.get(wikipedia_url, params=params).json()
+
+
         # Extract the plot summary of the movie
         wikiedia_summary = {
-            "plotShort": data.get('plotShort').get('plainText')
+            "plotShort": response.get('plotShort').get('plainText')
         }
         return wikiedia_summary
 
@@ -81,3 +90,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
