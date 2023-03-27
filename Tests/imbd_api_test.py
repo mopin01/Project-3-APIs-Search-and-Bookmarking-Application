@@ -1,41 +1,46 @@
+import asyncio
 import unittest
 from unittest.mock import patch
 import sys
 sys.path.append("../apis")
 from imbd_api import get_imbd_data, get_wikipedia_data
 
-class TestIMBD(unittest.TestCase):
+class TestAPIRequests(unittest.TestCase):
 
-    @patch('requests.get')
-    def test_get_imbd_data(self, mock_get):
-        # Mock the API response
-        mock_get.return_value.json.return_value = {
-            'results': [{
-                'id': 'tt1234567',
-                'title': 'Test Movie'
-            }]
+    @patch('my_module.aiohttp.ClientSession.get')
+    async def test_get_imbd_data(self, mock_get):
+        # Mock the response from the API
+        mock_data = {
+            'results': [
+                {'id': 'tt0068646', 'title': 'The Godfather', 'description': '...'},
+                {'id': 'tt0071562', 'title': 'The Godfather: Part II', 'description': '...'}
+            ]
         }
+        mock_get.return_value.__aenter__.return_value.json.return_value = mock_data
+        
+        # Call the function to test
+        result = await get_imbd_data('The Godfather')
+        
+        # Assert that the expected result was returned
+        self.assertEqual(result, {'id': 'tt0068646'})
 
-        # Call the function with a search query
-        imbd_data = get_imbd_data('Test Movie')
-
-        # Check that the function returns the correct movie ID
-        self.assertEqual(imbd_data['id'], 'tt1234567')
-
-    @patch('requests.get')
-    def test_get_wikipedia_data(self, mock_get):
-        # Mock the API response
-        mock_get.return_value.json.return_value = {
+    @patch('my_module.aiohttp.ClientSession.get')
+    async def test_get_wikipedia_data(self, mock_get):
+        # Mock the response from the API
+        mock_data = {
+            'id': 'tt0068646',
+            'title': 'The Godfather',
             'plotShort': {
-                'plainText': 'Test plot summary'
+                'plainText': 'The aging patriarch of an organized crime dynasty...'
             }
         }
-
-        # Call the function with a movie ID
-        wikipedia_summary = get_wikipedia_data('tt1234567')
-
-        # Check that the function returns the correct plot summary
-        self.assertEqual(wikipedia_summary['plotShort'], 'Test plot summary')
+        mock_get.return_value.__aenter__.return_value.json.return_value = mock_data
+        
+        # Call the function to test
+        result = await get_wikipedia_data('tt0068646')
+        
+        # Assert that the expected result was returned
+        self.assertEqual(result, {"plotShort": "The aging patriarch of an organized crime dynasty..."})
 
 if __name__ == '__main__':
     unittest.main()
