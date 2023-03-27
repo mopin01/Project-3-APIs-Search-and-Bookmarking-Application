@@ -13,8 +13,12 @@ cache = Cache()
 
 @app.route('/')
 async def homepage():
-    movie_quote = await moviequotes_api.get_quote()
-    return render_template('index.html', movie_quote=movie_quote)
+    try:
+        movie_quote = await moviequotes_api.get_quote()
+        return render_template('index.html', movie_quote=movie_quote)
+    except Exception as e:
+        return render_template('error.html', message='Error: Unable to retrieve movie quote. ' + str(e))
+
 
 @app.route('/get_movie')
 async def movie_info():
