@@ -20,6 +20,8 @@ async def homepage():
 async def search():
     movie_title = request.args.get('movie_name')
     search_movies = await imbd_api.search_movies(movie_title)
+    if not movie_title:
+        return render_template('error.html', message='Please enter a movie title')
     return render_template('search.html', movie_title=movie_title, search_movies=search_movies)
 
 @app.route('/get_movie/<title>')
