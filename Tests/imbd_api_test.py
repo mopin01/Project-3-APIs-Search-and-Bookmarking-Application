@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import sys
 sys.path.append("../apis")
 from imbd_api import get_imbd_data, get_wikipedia_data
@@ -35,7 +35,9 @@ class TestAPIRequests(unittest.TestCase):
                 'plainText': 'The aging patriarch of an organized crime dynasty...'
             }
         }
-        mock_get.return_value.__aenter__.return_value.json.return_value = mock_data
+        mock_response = MagicMock()
+        mock_response.json.return_value = mock_data
+        mock_get.return_value = mock_response
         
         # Call the function to test
         result = get_wikipedia_data('tt0068646')
