@@ -55,11 +55,7 @@ def get_imbd_data(name):
     except (IndexError, KeyError) as e:
         print('Error getting IMBD data: ', e)
         raise ValueError('Could not find IMBD data for given movie title.')
-            
-    except aiohttp.ClientError as e:
-        print('Error connecting to IMBD API: ', e)
-        raise ValueError('Unable to connect to IMBD API.') 
-            
+        
     except Exception as e:
         print('Unknown error occurred while getting IMBD data: ', e)
         raise ValueError('An unknown error occurred while getting IMBD data.')
@@ -86,12 +82,10 @@ def get_wikipedia_data(id):
         }
         return wikiedia_summary
 
-    except (aiohttp.ClientError, asyncio.TimeoutError) as e:
-        print(f'Error occurred while fetching Wikipedia data: {str(e)}')
-        raise Exception('Error occurred while fetching Wikipedia data.')
     except KeyError as e:
         print(f'Error occurred while parsing Wikipedia response: {str(e)}')
         raise Exception('Error occurred while parsing Wikipedia response.')
+
     except Exception as e:
         print(f'Unknown error occurred while fetching Wikipedia data: {str(e)}')
         raise Exception('Unknown error occurred while fetching Wikipedia data.')
