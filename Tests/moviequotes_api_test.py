@@ -1,6 +1,5 @@
 import unittest
-from unittest.mock import AsyncMock, patch
-import asyncio
+from unittest.mock import patch
 import sys
 sys.path.append("../apis")
 from moviequotes_api import get_quote
