@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import patch
+import os
 import sys
-sys.path.append("../apis")
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'apis')))
 from youtube_trailer_api import get_movie_trailer
 
 movie_title = "Inception"
