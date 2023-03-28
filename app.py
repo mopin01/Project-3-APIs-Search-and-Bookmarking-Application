@@ -51,9 +51,9 @@ def movie_info(title):
             data = format_data(data)
             cache.add_movie(data)
         else:
-            data = cache.get_movie_by_title(movie_title)
+            data = cache.get_movie_by_title(title)
 
-        return render_template('movie.html', data=extract_data(data), is_bookmarked=bookmarks.movie_exists(movie_title))
+        return render_template('movie.html', data=extract_data(data), is_bookmarked=bookmarks.movie_exists(title))
     except ValueError as e:
         error_message = str(e)
         return render_template('error.html', error_message=error_message)
