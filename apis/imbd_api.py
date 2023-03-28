@@ -15,22 +15,19 @@ search_url = "https://imdb-api.com/en/API/SearchMovie"
 wikipedia_url = 'https://imdb-api.com/en/API/Wikipedia/'
 
 def search_movies(name):
-
-""" This function gets the movieID of what we're searching """
-def get_imbd_data(name):
-
     try:
         # Set the headers with API key and content type
         params = {
             'apiKey': apiKey,
             'expression': name
         }
+
         # Send a GET request to the IMBD API to search for movies
         response = requests.get(search_url, params=params).json()
 
         # Extract the ID and title of all movies that match the search
         imdb_data = []
-        for result in data.get('results', []):
+        for result in response.get('results', []):
             imdb_data.append({
                 'title': result.get('title')
             })
@@ -66,8 +63,6 @@ def get_imbd_data(name):
     except Exception as e:
         print('Unknown error occurred while getting IMBD data: ', e)
         raise ValueError('An unknown error occurred while getting IMBD data.')
-
-
 
 """ This function uses the returned movieID and gets the plot summary of that movie """
 def get_wikipedia_data(id):
