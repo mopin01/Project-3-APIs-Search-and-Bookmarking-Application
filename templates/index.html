@@ -6,13 +6,25 @@
     
    <p class="text-center">Uses The  IMBD API, OpenMovieDB API, and the YouTube API to look up your favorite movies.</p>
     
-    <form class="text-center" method="GET" action="/search_movies">
-        <label for="movie_name">Search query:</label> 
-        <br>
-        <input id="movie_name" name="movie_name" class="form-control" placeholder="Enter movie name">
-        <br>
-        <input class="btn btn-success" id="submit-button" type="submit" value="GO" />
-    </form>
+   <form class="text-center" method="GET" action="/search_movies" onsubmit="return validateForm()">
+    <label for="movie_name">Search query:</label> 
+    <br>
+    <input id="movie_name" name="movie_name" class="form-control" placeholder="Enter movie name">
+    <br>
+    <input class="btn btn-success" id="submit-button" type="submit" value="GO" />
+</form>
+
+<script>
+    function validateForm() {
+        var movieName = document.getElementById("movie_name").value;
+        if (movieName == "") {
+            alert("Please enter a movie title");
+            return false;
+        }
+        return true;
+    }
+</script>
+
         
 </div>
 
