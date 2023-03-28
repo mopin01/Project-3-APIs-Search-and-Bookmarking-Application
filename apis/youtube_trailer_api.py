@@ -28,14 +28,11 @@ def get_movie_trailer(movie_title):
         video_title = search_result['items'][0]['snippet']['title']
         channel_name = search_result['items'][0]['snippet']['channelTitle']
 
-        print(f'Found video: {video_title} by {channel_name}')
-        print(f'https://www.youtube.com/watch?v={video_id}')
-
         return {
             "video_id": video_id,
             "video_title": video_title,
             "channel_name": channel_name,
-            "movie_title": movie_title
+            "title": movie_title
         }
 
     except HttpError as e:
