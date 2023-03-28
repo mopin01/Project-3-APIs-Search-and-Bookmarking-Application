@@ -48,7 +48,7 @@ def get_imbd_data(name):
 
         # Extract the ID of the first movie that matches the search
         imbd_data = {
-            'id': response.get('results')[0].get('id')
+            'id': data.get('results')[0].get('id')
         }
         return imbd_data
 
