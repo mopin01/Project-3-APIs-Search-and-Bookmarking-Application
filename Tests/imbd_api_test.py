@@ -6,7 +6,7 @@ from imbd_api import get_imbd_data, get_wikipedia_data
 
 class TestAPIRequests(unittest.TestCase):
 
-    @patch('imbd_api.aiohttp.ClientSession.get')
+    @patch('imbd_api.requests.get')
     def test_get_imbd_data(self, mock_get):
         # Mock the response from the API
         mock_data = {
@@ -15,7 +15,9 @@ class TestAPIRequests(unittest.TestCase):
                 {'id': 'tt0071562', 'title': 'The Godfather: Part II', 'description': '...'}
             ]
         }
-        mock_get.return_value.__aenter__.return_value.json.return_value = mock_data
+        mock_response = MagicMock()
+        mock_response.json.return_value = mock_data
+        mock_get.return_value = mock_response
         
         # Call the function to test
         result = get_imbd_data('The Godfather')
@@ -23,7 +25,7 @@ class TestAPIRequests(unittest.TestCase):
         # Assert that the expected result was returned
         self.assertEqual(result, {'id': 'tt0068646'})
 
-    @patch('imbd_api.aiohttp.ClientSession.get')
+    @patch('imbd_api.requests.get')
     def test_get_wikipedia_data(self, mock_get):
         # Mock the response from the API
         mock_data = {
