@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import patch, MagicMock
+import os
 import sys
-sys.path.append("../apis")
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'apis')))
 from imbd_api import get_imbd_data, get_wikipedia_data
 
 class TestAPIRequests(unittest.TestCase):
