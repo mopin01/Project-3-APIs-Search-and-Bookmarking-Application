@@ -32,7 +32,7 @@ def get_movie_trailer(movie_title):
             "video_id": video_id,
             "video_title": video_title,
             "channel_name": channel_name,
-            "movie_title": movie_title
+            "title": movie_title
         }
 
     except HttpError as e:

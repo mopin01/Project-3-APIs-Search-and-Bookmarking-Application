@@ -34,10 +34,10 @@ class TestGetMovieTrailer(unittest.TestCase):
         self.assertIn("video_id", result)
         self.assertIn("video_title", result)
         self.assertIn("channel_name", result)
-        self.assertIn("movie_title", result)
+        self.assertIn("title", result)
 
         # Check if the movie_title in the result matches the input movie_title.
-        self.assertEqual(result["movie_title"], movie_title)
+        self.assertEqual(result["title"], movie_title)
 
         # Check if the mocked values are in the result.
         self.assertEqual(result["video_id"], "mock_video_id")
